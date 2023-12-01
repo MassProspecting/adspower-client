@@ -39,7 +39,7 @@ def create
         'group_id' => '0',
         'proxyid' => '1',
         'fingerprint_config' => {
-            'browser_kernel_config' => {"version": "115", "type":"chrome"}
+            'browser_kernel_config' => {"version": "119", "type":"chrome"}
         }
     }
     # api call
@@ -80,13 +80,16 @@ def start(id)
     ret
 end
 
-id = create()
-puts id
+
+#id = create()
+#puts id
 
 #delete('jc5fiad')
-=begin
-ret = start('jc5gajl')
 
+ret = start('jc5gajl')
+=begin
+# Attach test execution to the existing browser
+# reference: https://zhiminzhan.medium.com/my-innovative-solution-to-test-automation-attach-test-execution-to-the-existing-browser-b90cda3b7d4a
 url = ret['data']['ws']['selenium']
 opts = Selenium::WebDriver::Chrome::Options.new
 opts.add_option("debuggerAddress", url)
