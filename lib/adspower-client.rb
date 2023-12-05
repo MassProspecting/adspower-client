@@ -1,7 +1,6 @@
 require 'uri'
 require 'net/http'
 require 'json'
-require 'pry'
 require 'blackstack-core'
 require 'selenium-webdriver'
 require 'watir'
