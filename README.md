@@ -5,9 +5,9 @@ Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](htt
 
 **Outline:**
 
-1. [Installation](./#1-installation)
-2. [Scraping](./#2-scraping)
-3. [Internals](./#3-internals)
+1. [Installation](#1-installation)
+2. [Scraping](#2-scraping)
+3. [Internals](#3-internals)
 
 ## 1. Installation
 
