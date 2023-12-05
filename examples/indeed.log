@@ -1,0 +1,556 @@
+2023-12-05 18:21:13: [0;33;49mScraping Indeed Example[0m
+2023-12-05 18:22:23: [0;33;49mScraping Indeed Example[0m
+2023-12-05 18:22:36: [0;33;49mScraping Indeed Example[0m
+2023-12-05 18:22:56: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 18:22:56: Scraping [0;34;49mMiami[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTampa[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOrlando[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSt. Petersburg[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHialeah[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPort St. Lucie[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCape Coral[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTallahassee[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFort Lauderdale[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPembroke Pines[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHollywood[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMiramar[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCoral Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGainesville[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLehigh Acres[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mClearwater[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalm Bay[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBrandon[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWest Palm Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLakeland[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPompano Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMiami Gardens[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSpring Hill[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDavie[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBoca Raton[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mRiverview[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSunrise[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPlantation[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDeltona[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMiami Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalm Coast[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mAlafaya[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFort Myers[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTown 'n' Country[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLargo[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMelbourne[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mThe Villages[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDeerfield Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBoynton Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPine Hills[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mKissimmee[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mKendall[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLauderhill[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHomestead[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNorth Port[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWeston[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDelray Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPoinciana[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDaytona Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPort Orange[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTamarac[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mJupiter[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDoral[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWellington[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCoconut Creek[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPort Charlotte[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalm Harbor[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNorth Miami[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mThe Hammocks[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFountainebleau[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOcala[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSanford[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBradenton[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBonita Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSt. Cloud[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMargate[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSarasota[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWesley Chapel[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mKendale Lakes[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalm Beach Gardens[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTamiami[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mApopka[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPinellas Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPensacola[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCoral Gables[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOcoee[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCountry Club[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mUniversity[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTitusville[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWinter Garden[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFort Pierce[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOakland Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNorth Miami Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWinter Haven[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mAltamonte Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNorth Lauderdale[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOrmond Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCutler Bay[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOviedo[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNorth Fort Myers[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGreenacres[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFour Corners[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mRoyal Palm Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHallandale Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mClermont[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mThe Acreage[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPlant City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mKendall West[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMeadow Woods[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWinter Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mRichmond West[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLauderdale Lakes[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mValrico[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLake Worth[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHorizon West[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLand O' Lakes[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mAventura[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mUniversity[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouth Miami Heights[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMerritt Island[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mEgyLake-Leto[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDunedin[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mParkland[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNavarre[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPanama City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCooper City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFerry Pass[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDeLand[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBuenaventura Lakes[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCarrollwood[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGolden Glades[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mRiviera Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWest Little River[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFruit Cove[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDania Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPrinceton[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWinter Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mEast Lake[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMiami Lakes[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCasselberry[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLakeside[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGolden Gate[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mEast Lake-Orient Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWestchester[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLake Magdalene[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOakleaf Plantation[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mRockledge[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNew Smyrna Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFleming Island[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mImmokalee[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBayonet Point[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCitrus Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLeisure City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouth Bradenton[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSebastian[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHaines City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTemple Terrace[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mUniversity Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTarpon Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalm City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCrestview[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mKeystone[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalm Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mRuskin[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCoral Terrace[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWest Melbourne[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSun City Center[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPace[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalmetto Bay[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mVero Beach South[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mVenice[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOak Ridge[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mKey West[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHialeah Gardens[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBloomingdale[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mJacksonville Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalm River-Clair Mel[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLeesburg[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWestchase[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mIves Estates[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mEnsley[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHunters Creek[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mEdgewater[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mThe Crossings[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWekiwa Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mJasmine Estates[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFort Walton Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFlorida Ridge[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNorthdale[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSunny Isles Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNaples[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLynn Haven[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWright[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBrent[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLutz[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWest Pensacola[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalm Valley[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDeBary[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFish Hawk[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mEustis[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHoliday[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSweetwater[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLealman[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBayshore Gardens[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPunta Gorda[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mApollo Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBelle Glade[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBellview[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBartow[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLake Butler[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPinecrest[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCocoa[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSeminole[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTavares[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGibsonton[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSafety Harbor[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMaitland[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMarco Island[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBrownsville[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mUpper Grand Lagoon[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mVero Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSan Carlos Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWorld Golf Village[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMidway[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLake Mary[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mAuburndale[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGlenvar Heights[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLake Wales[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPinewood[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCountry Walk[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNew Port Richey[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOjus[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGroveland[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMyrtle Grove[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mStuart[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mZephyrhills[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOpa-locka[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNocatee[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNiceville[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalmetto Estates[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mThree Lakes[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLady Lake[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSarasota Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBellair-Meadowbrook Terrace[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mEnglewood[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mAzalea Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWest Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLongwood[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSunset[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOldsmar[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCallaway[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSt. Augustine[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWest Lealman[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWarrington[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLockhart[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOlympia Heights[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMount Dora[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mIona[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouthchase[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFruitland Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDestin[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mUnion Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouth Venice[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMiami Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHobe Sound[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mForest City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mAtlantic Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mThonotosassa[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mJensen Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGonzalez[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFruitville[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGladeview[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalmetto[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mEast Milton[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMiddleburg[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHomosassa Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCypress Lake[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGoldenrod[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMinneola[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouth Daytona[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mKey Biscayne[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNorth Palm Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPanama City Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLakewood Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mShady Hills[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFernandina Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLantana[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mYulee[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWilton Manors[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHudson[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mConway[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLakeland Highlands[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mVillas[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHolly Hill[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGulfport[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mRichmond Heights[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mViera West[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouth Miami[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLake City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWestwood Lakes[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOrange City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mJupiter Farms[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFlorida City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPine Castle[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mElfers[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCocoa Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPort St. John[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPort Salerno[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSatellite Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNaranja[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFairview Shores[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGoulds[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLighthouse Point[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGateway[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mProgress Village[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWestview[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSebring[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mViera East[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDoctor Phillips[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mAvon Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGulf Gate Estates[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPasadena Hills[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCypress Gardens[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMango[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHighland City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNew Port Richey East[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMilton[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFuller Heights[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTrinity[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalatka[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWestgate[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCape Canaveral[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPine Ridge[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWest Perrine[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMiami Shores[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCheval[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMedulla[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCelebration[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mAlachua[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBee Ridge[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSt. Augustine Shores[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mAsbury Lake[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSilver Springs Shores[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGifford[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBithlo[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBeverly Hills[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSt. Pete Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLaurel[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mKey Largo[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNorth Sarasota[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMiramar Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBardmoor[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSpringfield[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWest Miami[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSeffner[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWest Vero Corridor[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMicco[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGreen Cove Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mRotonda[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOdessa[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOrange Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalm Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMemphis[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mVenice Gardens[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mIndian Harbour Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLake Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMarathon[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mArcadia[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSugarmill Woods[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHernando[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBrooksville[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFern Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBroadview Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCitrus Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mClewiston[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNorth Bay Village[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPebble Creek[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMcGregor[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWest Samoset[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWimauma[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mInwood[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouthwest Ranches[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWilliamsburg[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWedgefield[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSoutheast Arcadia[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWillow Oak[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFort Myers Shores[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNorth Weeki Wachee[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSanibel[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mInverness[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDade City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBelle Isle[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mRiver Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWildwood[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouthgate[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLongboat Key[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOsprey[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNene Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mIndian River Estates[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFort Myers Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDeFuniak Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCitrus Hills[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mQuincy[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSt. Augustine Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOrmond-by-the-Sea[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFort Pierce North[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMarianna[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLake Lorraine[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGulf Breeze[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLive Oak[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouth Patrick Shores[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTreasure Island[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLely Resort[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNaples Manor[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mJan Phyl Village[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBeacon Square[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPerry[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCrystal Lake[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPembroke Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOrlovista[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMacclenny[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLauderdale-by-the-Sea[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCocoa West[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLecanto[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mKathleen[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHeathrow[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouth Gate Ridge[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCombee Settlement[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDavenport[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNewberry[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLake Alfred[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHigh Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFort Meade[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPahokee[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTequesta[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouth Apopka[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSky Lake[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mInverness Highlands South[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMascotte[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPelican Bay[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBay Harbor Islands[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSt. Augustine South[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOcean City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMims[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLoughman[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFellsmere[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMount Plymouth[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mOkeechobee[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSurfside[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNaples Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWahneta[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouth Sarasota[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mValparaiso[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPine Manor[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mStarke[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTice[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouth Highpoint[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFloral City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSiesta Key[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPalm Springs North[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLaBelle[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mRiver Ridge[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDundee[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHutchinson Island South[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPort LaBelle[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mTimber Pines[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mRio Pinar[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mFlagler Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBelleview[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mZephyrhills West[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouth Bay[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSouth Pasadena[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSamsula-Spruce Creek[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mKenneth City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPlantation[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWhiskey Creek[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mConnerton[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBig Pine Key[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWarm Mineral Springs[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWauchula[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWhite City[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mVamo[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mPea Ridge[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSawgrass[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBay Hill[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mZephyrhills South[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mKensington Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCrawfordville[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mThree Oaks[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mDaytona Beach Shores[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mSamoset[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mRidge Manor[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mButler Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLake Sarasota[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBalm[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mCortez[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mParker[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mThe Meadows[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLochmoor Waterway Estates[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mWest DeLand[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mStock Island[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mLake Belvedere Estates[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mMary Esther[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mNassau Village-Ratliff[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBrookridge[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mGrant-Valkaria[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mBelleair[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mJune Park[0m...[0;32;49mdone[0m
+2023-12-05 18:22:56: Scraping [0;34;49mHolmes Beach[0m...[0;32;49mdone[0m
+2023-12-05 18:24:32: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 18:24:32: Scraping [0;34;49mMiami[0m...2023-12-05 18:25:20: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 18:25:20: Scraping [0;34;49mMiami[0m...[0;32;49mdone[0m
+2023-12-05 18:25:42: Scraping [0;34;49mTampa[0m...2023-12-05 18:27:23: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 18:27:23: Scraping [0;34;49mMiami[0m... [0;32;49mdone[0m
+2023-12-05 18:27:40: Scraping [0;34;49mTampa[0m... 2023-12-05 18:36:27: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 18:36:27: Scraping [0;34;49mMiami[0m... [0;32;49mdone[0m
+2023-12-05 18:36:53: Scraping [0;34;49mTampa[0m... 2023-12-05 18:40:49: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 18:40:49: Scraping [0;34;49mMiami[0m... [0;32;49mdone[0m
+2023-12-05 18:41:12: Scraping [0;34;49mTampa[0m... [0;32;49mdone[0m
+2023-12-05 18:41:34: Scraping [0;34;49mOrlando[0m... [0;32;49mdone[0m
+2023-12-05 18:42:02: Scraping [0;34;49mSt. Petersburg[0m... [0;32;49mdone[0m
+2023-12-05 18:42:21: Scraping [0;34;49mHialeah[0m... [0;32;49mdone[0m
+2023-12-05 18:42:45: Scraping [0;34;49mPort St. Lucie[0m... [0;32;49mdone[0m
+2023-12-05 18:43:16: Scraping [0;34;49mCape Coral[0m... [0;32;49mdone[0m
+2023-12-05 18:43:34: Scraping [0;34;49mTallahassee[0m... [0;32;49mdone[0m
+2023-12-05 18:44:08: Scraping [0;34;49mFort Lauderdale[0m... [0;32;49mdone[0m
+2023-12-05 18:44:27: Scraping [0;34;49mPembroke Pines[0m... 2023-12-05 19:03:16: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 19:03:16: Scraping [0;34;49mMiami[0m... [0;32;49mdone[0m
+2023-12-05 19:03:35: Scraping [0;34;49mTampa[0m... 2023-12-05 19:05:14: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 19:05:14: Scraping [0;34;49mMiami[0m... 2023-12-05 19:21:35: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 19:21:35: Scraping [0;34;49mMiami[0m... 2023-12-05 19:24:39: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 19:24:39: Scraping [0;34;49mMiami[0m... [0;32;49mdone[0m
+2023-12-05 19:25:07: Scraping [0;34;49mTampa[0m... [0;32;49mdone[0m
+2023-12-05 19:26:08: Scraping [0;34;49mOrlando[0m... [0;32;49mdone[0m
+2023-12-05 19:26:33: Scraping [0;34;49mSt. Petersburg[0m... [0;32;49mdone[0m
+2023-12-05 19:26:53: Scraping [0;34;49mHialeah[0m... [0;32;49mdone[0m
+2023-12-05 19:27:12: Scraping [0;34;49mPort St. Lucie[0m... [0;32;49mdone[0m
+2023-12-05 19:27:34: Scraping [0;34;49mCape Coral[0m... [0;32;49mdone[0m
+2023-12-05 19:28:29: Scraping [0;34;49mTallahassee[0m... [0;32;49mdone[0m
+2023-12-05 19:28:51: Scraping [0;34;49mFort Lauderdale[0m... [0;32;49mdone[0m
+2023-12-05 19:29:08: Scraping [0;34;49mPembroke Pines[0m... [0;32;49mdone[0m
+2023-12-05 19:29:29: Scraping [0;34;49mHollywood[0m... [0;32;49mdone[0m
+2023-12-05 19:29:49: Scraping [0;34;49mMiramar[0m... [0;32;49mdone[0m
+2023-12-05 19:30:15: Scraping [0;34;49mCoral Springs[0m... [0;32;49mdone[0m
+2023-12-05 19:30:40: Scraping [0;34;49mGainesville[0m... [0;32;49mdone[0m
+2023-12-05 19:30:59: Scraping [0;34;49mLehigh Acres[0m... [0;32;49mdone[0m
+2023-12-05 19:31:22: Scraping [0;34;49mClearwater[0m... [0;32;49mdone[0m
+2023-12-05 19:31:56: Scraping [0;34;49mPalm Bay[0m... [0;32;49mdone[0m
+2023-12-05 19:32:13: Scraping [0;34;49mBrandon[0m... [0;32;49mdone[0m
+2023-12-05 19:32:37: Scraping [0;34;49mWest Palm Beach[0m... [0;32;49mdone[0m
+2023-12-05 19:32:59: Scraping [0;34;49mLakeland[0m... [0;32;49mdone[0m
+2023-12-05 19:33:36: Scraping [0;34;49mPompano Beach[0m... 

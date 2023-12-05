@@ -128,13 +128,38 @@ class AdsPowerClient
     # delete the profile
     # return the html
     def html(url)
-        id = self.create
-        driver = self.driver(id)
-        driver.get(url)
-        html = driver.find_element(:tag_name => 'html')
-        self.stop(id)
-        driver.quit
-        self.delete(id)
+        id = nil
+        html = nil
+        begin
+            # create the profile
+            sleep(1) # Avoid the "Too many request per second" error
+            id = self.create
+            driver = self.driver(id)
+
+            # get html
+            driver.get(url)
+            html = driver.find_element(:tag_name => 'html')
+
+            # stop the profile
+            sleep(1) # Avoid the "Too many request per second" error
+            driver.quit
+            self.stop(id)
+
+            # delete the profile
+            sleep(1) # Avoid the "Too many request per second" error
+            self.delete(id)
+
+            # reset id
+            id = nil
+        rescue => e
+            if id
+                sleep(1) # Avoid the "Too many request per second" error
+                self.stop(id)
+                sleep(1) # Avoid the "Too many request per second" error
+                driver.quit
+                self.delete(id) if id
+            end # if id
+        end
         html
     end
 end # class AdsPowerClient

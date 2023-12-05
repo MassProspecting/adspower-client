@@ -1,5 +1,16 @@
 require_relative '../lib/adspower-client'
+#require 'adspower-client'
+require 'simple_cloud_logging'
+require 'colorize'
+require_relative './aux/indeed-urls'
 
-client = AdsPowerClient.new
-puts client.html('https://www.indeed.com/jobs?q=%2435%2C000&l=Jacksonville%2C+FL&radius=25&vjk=4d50a7da37ac13e8?start=60')
+c = AdsPowerClient.new
+l = BlackStack::LocalLogger.new('indeed.log')
 
+l.log "Scraping Indeed Example".yellow
+
+URLS.each { |url|
+    l.logs "Scraping #{url[:name].blue}... "
+    html = c.html(url[:url])
+    l.logf 'done'.green
+}
