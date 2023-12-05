@@ -50,7 +50,13 @@ gem install adspower-client
 
 ## 2. Scraping From Code
 
-_pending_
+```ruby
+client = AdsPowerClient.new(
+    key: '************************',
+)
+
+html = client.html('http://foo.com')
+```
 
 ## 3. Running Scraping Server
 
@@ -63,10 +69,6 @@ Internal methods are not used by end-programmers.
 **Checking AdsPower Status**
 
 ```ruby
-client = AdsPowerClient.new(
-    key: '************************',
-)
-
 p client.status
 # => "success"
 ```
@@ -83,3 +85,20 @@ p client.create
 ```ruby
 client.delete('jc8y0yt')
 ```
+
+**Starting Browser**
+
+```ruby
+p client.start('jc8y5g3')
+# => {"code"=>0, "msg"=>"success", "data"=>{"ws"=>{"puppeteer"=>"ws://127.0.0.1:43703/devtools/browser/60e1d880-e4dc-4ae0-a2d3-56d123648299", "selenium"=>"127.0.0.1:43703"}, "debug_port"=>"43703", "webdriver"=>"/home/leandro/.config/adspower_global/cwd_global/chrome_116/chromedriver"}}
+```
+
+**Operating Browser**
+
+```ruby
+id = 'jc8y5g3'
+url = 'https://google.com'
+driver = client.driver(id)
+driver.get(url)
+```
+

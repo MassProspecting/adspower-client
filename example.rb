@@ -11,7 +11,7 @@ class AdsPowerClient
     # reference: https://localapi-doc-en.adspower.com/docs/Rdw7Iu
     attr_accessor :key, :adspower_listener, :adspower_default_browser_version
 
-    def initialize(h)
+    def initialize(h={})
         self.key = h[:key] # mandatory
         self.adspower_listener = h[:adspower_listener] || 'http://127.0.0.1:50325'
         self.adspower_default_browser_version = h[:adspower_default_browser_version] || '116'
@@ -80,40 +80,68 @@ class AdsPowerClient
     def start(id)
         uri = URI.parse("#{self.adspower_listener}/api/v1/browser/start?user_id=#{id}")
         res = Net::HTTP.get(uri)
+        # show respose bo
+        ret = JSON.parse(res)
+        raise "Error: #{ret.to_s}" if ret['msg'].to_s.downcase != 'success'
+        # return id of the created user
+        ret
+    end
+
+    # run the browser
+    # return the URL to operate the browser thru selenium
+    # 
+    # reference: https://localapi-doc-en.adspower.com/docs/DXam94
+    # 
+    def stop(id)
+        uri = URI.parse("#{self.adspower_listener}/api/v1/browser/stop?user_id=#{id}")
+        res = Net::HTTP.get(uri)
         # show respose body
         ret = JSON.parse(res)
         raise "Error: #{ret.to_s}" if ret['msg'].to_s.downcase != 'success'
         # return id of the created user
         ret
     end
+
+    #
+    def driver(id)
+        ret = self.start(id)
+
+        # Attach test execution to the existing browser
+        # reference: https://zhiminzhan.medium.com/my-innovative-solution-to-test-automation-attach-test-execution-to-the-existing-browser-b90cda3b7d4a
+        url = ret['data']['ws']['selenium']
+        opts = Selenium::WebDriver::Chrome::Options.new
+        opts.add_option("debuggerAddress", url)
+
+        # connect to the existing browser
+        # reference: https://localapi-doc-en.adspower.com/docs/K4IsTq
+        driver = Selenium::WebDriver.for(:chrome, :options=>opts)
+
+        # return
+        driver
+    end # def driver
+
+    # create a new profile
+    # start the browser
+    # visit the page
+    # grab the html
+    # quit the browser from webdriver
+    # stop the broser from adspower
+    # delete the profile
+    # return the html
+    def html(url)
+        id = self.create
+        driver = self.driver(id)
+        driver.get(url)
+        html = driver.find_element(:tag_name => 'html')
+        driver.quit
+        self.stop(id)
+        self.delete(id)
+        html
+    end
+
+
 end # class AdsPowerClient
 
-client = AdsPowerClient.new(
-    key: '*********',
-)
+client = AdsPowerClient.new
+puts client.html('http://foo.com')
 
-#p client.status
-# => "success"
-
-#p client.create
-# => "jc8y0yt"
-
-#client.delete('jc8y0yt')
-
-id = client.create
-p client.start(id)
-# => ""
-
-=begin
-# Attach test execution to the existing browser
-# reference: https://zhiminzhan.medium.com/my-innovative-solution-to-test-automation-attach-test-execution-to-the-existing-browser-b90cda3b7d4a
-url = ret['data']['ws']['selenium']
-opts = Selenium::WebDriver::Chrome::Options.new
-opts.add_option("debuggerAddress", url)
-
-# connect to the existing browser
-# reference: https://localapi-doc-en.adspower.com/docs/K4IsTq
-driver = Selenium::WebDriver.for(:chrome, :options=>opts)
-
-driver.get 'https://google.com'
-=end
