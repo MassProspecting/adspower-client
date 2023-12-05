@@ -51,13 +51,28 @@ For a complete guide about finding the ChromeDriver version you need, refer to [
 gem install adspower-client
 ```
 
-## 2. Scraping
+Then, you can start a client from your Ruby code:
 
 ```ruby
 client = AdsPowerClient.new(
     key: '************************',
 )
+```
 
+## 2. Scraping
+
+The `html` method perform the following operations in order to scrape any webpage stealthly:
+
+- create a new profile
+- start the browser
+- visit the page
+- grab the html
+- quit the browser from webdriver
+- stop the broser from adspower
+- delete the profile
+- return the html
+
+```ruby
 html = client.html('http://foo.com')
 ```
 
