@@ -1,10 +1,16 @@
-**UNDER CONSTRUCTION**
 
-# Scraper
+# AdsPower Client
 
 Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](https://www.adspower.com/) and proxies.
 
-## Getting Started
+**Outline:**
+
+1. Installation
+2. Scraping From Code
+3. Running Scraping Server
+4. Internals
+
+## 1. Installation
 
 Install required packages in your computer:
 
@@ -13,6 +19,10 @@ Install required packages in your computer:
 3. Scraper
 
 **AdsPower**
+
+1. Install [AdsPower](https://www.adspower.com/) and install it in your computer.
+
+2. Run AdsPower and grab your API key as it is explained [here](https://help.adspower.com/docs/UsrbbM).
 
 **ChromeDriver**
 
@@ -32,3 +42,44 @@ sudo chmod +x /usr/bin/chromedriver
 
 For a complete guide about finding the ChromeDriver version you need, refer to [this article](https://chromedriver.chromium.org/downloads/version-selection).
 
+**Scraper**
+
+```bash
+gem install adspower-client
+```
+
+## 2. Scraping From Code
+
+_pending_
+
+## 3. Running Scraping Server
+
+_pending_
+
+## 4. Internals
+
+Internal methods are not used by end-programmers.
+
+**Checking AdsPower Status**
+
+```ruby
+client = AdsPowerClient.new(
+    key: '************************',
+)
+
+p client.status
+# => "success"
+```
+
+**Creating Browser**
+
+```ruby
+p client.create
+# => "jc8y0yt"
+```
+
+**Delete Browser**
+
+```ruby
+client.delete('jc8y0yt')
+```
