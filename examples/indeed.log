@@ -577,4 +577,12 @@
 
 2023-12-05 19:49:13: Scraping [0;34;49mMiami[0m... [0;32;49mdone[0m
 2023-12-05 19:49:33: Scraping [0;34;49mTampa[0m... [0;32;49mdone[0m
-2023-12-05 19:49:59: Scraping [0;34;49mOrlando[0m... 
+2023-12-05 19:49:59: Scraping [0;34;49mOrlando[0m... [0;32;49mdone[0m
+2023-12-05 19:50:16: Scraping [0;34;49mSt. Petersburg[0m... [0;32;49mdone[0m
+2023-12-05 19:50:37: Scraping [0;34;49mHialeah[0m... [0;32;49mdone[0m
+2023-12-05 19:51:01: Scraping [0;34;49mPort St. Lucie[0m... 2023-12-05 19:57:20: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 19:57:20: Scraping [0;34;49mMiami[0m... [0;32;49mdone[0m
+2023-12-05 19:57:42: Scraping [0;34;49mTampa[0m... [0;32;49mdone[0m
+2023-12-05 19:57:59: Scraping [0;34;49mOrlando[0m... [0;32;49mdone[0m
+2023-12-05 19:58:18: Scraping [0;34;49mSt. Petersburg[0m... 

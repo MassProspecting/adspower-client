@@ -73,7 +73,10 @@ The `html` method perform the following operations in order to scrape any webpag
 - return the html
 
 ```ruby
-html = client.html('http://foo.com')
+ret = client.html('http://foo.com')
+p ret[:profile_id]
+p ret[:status]
+p ret[:html]
 ```
 
 ## 3. Advanced

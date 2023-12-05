@@ -11,6 +11,6 @@ l.log "Scraping Indeed Example".yellow
 
 URLS.each { |url|
     l.logs "Scraping #{url[:name].blue}... "
-    html = c.html(url[:url])
-    l.logf 'done'.green
+    ret = c.html(url[:url])
+    l.logf ret[:status] == 'success' ? 'done'.green : ret[:status].red
 }
