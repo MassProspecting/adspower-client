@@ -133,15 +133,9 @@ class AdsPowerClient
         driver = self.driver(id)
         driver.get(url)
         html = driver.find_element(:tag_name => 'html')
-        driver.quit
         self.stop(id)
+        driver.quit
         self.delete(id)
         html
     end
-
-
 end # class AdsPowerClient
-
-client = AdsPowerClient.new
-puts client.html('http://foo.com')
-

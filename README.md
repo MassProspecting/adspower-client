@@ -6,9 +6,8 @@ Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](htt
 **Outline:**
 
 1. Installation
-2. Scraping From Code
-3. Running Scraping Server
-4. Internals
+2. Scraping
+3. Internals
 
 ## 1. Installation
 
@@ -48,7 +47,7 @@ For a complete guide about finding the ChromeDriver version you need, refer to [
 gem install adspower-client
 ```
 
-## 2. Scraping From Code
+## 2. Scraping
 
 ```ruby
 client = AdsPowerClient.new(
@@ -58,11 +57,7 @@ client = AdsPowerClient.new(
 html = client.html('http://foo.com')
 ```
 
-## 3. Running Scraping Server
-
-_pending_
-
-## 4. Internals
+## 3. Internals
 
 Internal methods are not used by end-programmers.
 
@@ -73,24 +68,30 @@ p client.status
 # => "success"
 ```
 
-**Creating Browser**
+**Creating Profile**
 
 ```ruby
 p client.create
 # => "jc8y0yt"
 ```
 
-**Delete Browser**
+**Deleting Profile**
 
 ```ruby
 client.delete('jc8y0yt')
 ```
 
-**Starting Browser**
+**Starting Profile**
 
 ```ruby
 p client.start('jc8y5g3')
 # => {"code"=>0, "msg"=>"success", "data"=>{"ws"=>{"puppeteer"=>"ws://127.0.0.1:43703/devtools/browser/60e1d880-e4dc-4ae0-a2d3-56d123648299", "selenium"=>"127.0.0.1:43703"}, "debug_port"=>"43703", "webdriver"=>"/home/leandro/.config/adspower_global/cwd_global/chrome_116/chromedriver"}}
+```
+
+**Stopping Profile**
+
+```ruby
+client.stop('jc8y5g3')
 ```
 
 **Operating Browser**
