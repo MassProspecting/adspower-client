@@ -7,7 +7,7 @@ Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](htt
 
 1. [Installation](#1-installation)
 2. [Scraping](#2-scraping)
-3. [Internals](#3-internals)
+3. [Advanced](#3-advanced)
 
 ## 1. Installation
 
@@ -57,9 +57,9 @@ client = AdsPowerClient.new(
 html = client.html('http://foo.com')
 ```
 
-## 3. Internals
+## 3. Advanced
 
-Internal methods are not used by end-programmers.
+Internal methods that you should handle to develop advanced bots.
 
 **Checking AdsPower Status**
 
