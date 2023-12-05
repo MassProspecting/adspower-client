@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
     s.name        = 'adspower-client'
-    s.version     = '1.0.1'
+    s.version     = '1.0.2'
     s.date        = '2023-12-05'
     s.summary     = "Ruby library for operating AdsPower API."
     s.description = "Ruby library for operating AdsPower API."
@@ -18,4 +18,4 @@ Gem::Specification.new do |s|
     s.add_runtime_dependency 'blackstack-core', '~> 1.2.15', '>= 1.2.15'
     s.add_runtime_dependency 'selenium-webdriver', '~> 4.10.0', '>= 4.10.0'
     s.add_runtime_dependency 'watir', '~> 7.3.0', '>= 7.3.0'
-  end
+end
