@@ -1,4 +1,6 @@
 
+THIS PROJECT IS STILL UNDER CONSTRUCTION
+
 # AdsPower Client
 
 Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](https://www.adspower.com/) and proxies.
