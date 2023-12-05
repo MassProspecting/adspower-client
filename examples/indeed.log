@@ -553,4 +553,28 @@
 2023-12-05 19:32:13: Scraping [0;34;49mBrandon[0m... [0;32;49mdone[0m
 2023-12-05 19:32:37: Scraping [0;34;49mWest Palm Beach[0m... [0;32;49mdone[0m
 2023-12-05 19:32:59: Scraping [0;34;49mLakeland[0m... [0;32;49mdone[0m
-2023-12-05 19:33:36: Scraping [0;34;49mPompano Beach[0m... 
+2023-12-05 19:33:36: Scraping [0;34;49mPompano Beach[0m... [0;32;49mdone[0m
+2023-12-05 19:33:55: Scraping [0;34;49mMiami Gardens[0m... [0;32;49mdone[0m
+2023-12-05 19:34:20: Scraping [0;34;49mSpring Hill[0m... [0;32;49mdone[0m
+2023-12-05 19:34:38: Scraping [0;34;49mDavie[0m... [0;32;49mdone[0m
+2023-12-05 19:35:22: Scraping [0;34;49mBoca Raton[0m... [0;32;49mdone[0m
+2023-12-05 19:35:43: Scraping [0;34;49mRiverview[0m... [0;32;49mdone[0m
+2023-12-05 19:36:00: Scraping [0;34;49mSunrise[0m... [0;32;49mdone[0m
+2023-12-05 19:36:26: Scraping [0;34;49mPlantation[0m... 2023-12-05 19:37:39: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 19:37:39: Scraping [0;34;49mMiami[0m... [0;32;49mdone[0m
+2023-12-05 19:38:02: Scraping [0;34;49mTampa[0m... 2023-12-05 19:40:31: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 19:40:31: Scraping [0;34;49mMiami[0m... [0;32;49mdone[0m
+2023-12-05 19:40:52: Scraping [0;34;49mTampa[0m... 2023-12-05 19:41:34: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 19:41:34: Scraping [0;34;49mMiami[0m... 2023-12-05 19:42:31: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 19:42:31: Scraping [0;34;49mMiami[0m... [0;32;49mdone[0m
+2023-12-05 19:42:50: Scraping [0;34;49mTampa[0m... [0;32;49mdone[0m
+2023-12-05 19:43:16: Scraping [0;34;49mOrlando[0m... [0;32;49mdone[0m
+2023-12-05 19:43:29: Scraping [0;34;49mSt. Petersburg[0m... 2023-12-05 19:49:13: [0;33;49mScraping Indeed Example[0m
+
+2023-12-05 19:49:13: Scraping [0;34;49mMiami[0m... [0;32;49mdone[0m
+2023-12-05 19:49:33: Scraping [0;34;49mTampa[0m... [0;32;49mdone[0m
+2023-12-05 19:49:59: Scraping [0;34;49mOrlando[0m... 

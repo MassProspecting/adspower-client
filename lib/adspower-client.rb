@@ -9,11 +9,13 @@ class AdsPowerClient
     # reference: https://localapi-doc-en.adspower.com/
     # reference: https://localapi-doc-en.adspower.com/docs/Rdw7Iu
     attr_accessor :key, :adspower_listener, :adspower_default_browser_version
+#    attr_accessor :profiles_created
 
     def initialize(h={})
         self.key = h[:key] # mandatory
         self.adspower_listener = h[:adspower_listener] || 'http://127.0.0.1:50325'
         self.adspower_default_browser_version = h[:adspower_default_browser_version] || '116'
+#        self.profiles_created = []
     end
 
     # send an GET request to "#{url}/status"
@@ -53,6 +55,8 @@ class AdsPowerClient
         # show respose body
         ret = JSON.parse(res.body)
         raise "Error: #{ret.to_s}" if ret['msg'].to_s.downcase != 'success'
+        # add to array of profiles created
+#        self.profiles_created << ret
         # return id of the created user
         ret['data']['id']
     end
@@ -152,6 +156,7 @@ class AdsPowerClient
             # reset id
             id = nil
         rescue => e
+            # stop and delete current profile
             if id
                 sleep(1) # Avoid the "Too many request per second" error
                 self.stop(id)
@@ -159,6 +164,17 @@ class AdsPowerClient
                 driver.quit
                 self.delete(id) if id
             end # if id
+            # raise the exception
+            raise e
+#        # process interruption
+#        rescue SignalException, SystemExit, Interrupt => e 
+#            if id
+#                sleep(1) # Avoid the "Too many request per second" error
+#                self.stop(id)
+#                sleep(1) # Avoid the "Too many request per second" error
+#                driver.quit
+#                self.delete(id) if id
+#            end # if id
         end
         html
     end
