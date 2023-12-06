@@ -15,11 +15,20 @@ Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](htt
 
 ## 1. Installation
 
-Install required packages in your computer:
+You need to install some required packages in your computer:
 
-1. AdsPower
-2. ChromeDriver
-3. Scraper
+1. AdsPower,
+2. ChromeDriver,
+3. Scraper.
+
+You can do that by script, like it is shown below:
+
+```bash
+wget https://raw.githubusercontent.com/leandrosardi/adspower-client/main/install.sh
+bash install.sh
+```
+
+Or you can do it manually like it's shown below:
 
 **AdsPower**
 
