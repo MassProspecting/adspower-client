@@ -81,7 +81,7 @@ class AdsPowerClient
     # reference: https://localapi-doc-en.adspower.com/docs/FFMFMf
     # 
     def start(id)
-        uri = URI.parse("#{self.adspower_listener}/api/v1/browser/start?user_id=#{id}")
+        uri = URI.parse("#{self.adspower_listener}/api/v1/browser/start?user_id=#{id}&headless=1")
         res = Net::HTTP.get(uri)
         # show respose bo
         ret = JSON.parse(res)
@@ -191,5 +191,5 @@ class AdsPowerClient
         end
         # return
         ret
-    end
+    end # def html
 end # class AdsPowerClient
