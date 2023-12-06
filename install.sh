@@ -68,3 +68,24 @@ sudo chmod +x /usr/bin/chromedriver
 wget https://version.adspower.net/software/linux-x64-global/AdsPower-Global-5.9.14-x64.deb
 sudo chmod 777 AdsPower-Global-5.9.14-x64.deb
 sudo dpkg -i AdsPower-Global-5.9.14-x64.deb
+sudo apt install AdsPower-Global-5.9.14-x64.deb
+
+# Find the location of adspower command
+sudo apt --fix-broken install
+sudo apt-get install apt-file
+sudo apt-file update
+apt-file search adspower
+
+# Install GUI
+# Reference: https://phoenixnap.com/kb/how-to-install-a-gui-on-ubuntu
+sudo apt update && sudo apt upgrade
+sudo apt install slim
+sudo apt install ubuntu-desktop
+sudo service slim start
+
+# Run AdsPower listener
+cd /usr/bin
+adspower_global --args --headless=true --api-key=4752e0440288b0ce8fe2c159daef0bbb --api-port=50325
+
+
+
