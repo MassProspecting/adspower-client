@@ -12,5 +12,9 @@ l.log "Scraping Indeed Example".yellow
 URLS.each { |url|
     l.logs "Scraping #{url[:name].blue}... "
     ret = c.html(url[:url])
+    if ret[:status] == 'success'
+        # write html into a file
+        File.open("indeed-#{url[:name]}.html", 'w') { |f| f.write(ret[:html]) }
+    end
     l.logf ret[:status] == 'success' ? 'done'.green : ret[:status].red
 }

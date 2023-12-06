@@ -152,7 +152,7 @@ class AdsPowerClient
 
             # get html
             driver.get(url)
-            html = driver.find_element(:tag_name => 'html')
+            html = driver.page_source
 
             # update the result
             ret[:html] = html
