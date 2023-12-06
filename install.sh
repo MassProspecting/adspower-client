@@ -30,6 +30,10 @@ curl -sSL https://get.rvm.io -o rvm.sh
 # install the latest stable Rails version
 echo "install rvm"
 bash /tmp/rvm.sh
+# fix the issue "RVM is not a function"
+# reference: https://stackoverflow.com/questions/9336596/rvm-installation-not-working-rvm-is-not-a-function
+source ~/.rvm/scripts/rvm
+type rvm | head -n 1
 # install and run Ruby 3.1.2
 echo "install Ruby 3.1.2"
 ~/.rvm/bin/rvm install 3.1.2
