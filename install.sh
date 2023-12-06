@@ -64,3 +64,7 @@ sudo mv chromedriver-linux64 /usr/bin/chromedriver
 sudo chown root:root /usr/bin/chromedriver
 sudo chmod +x /usr/bin/chromedriver
 
+# Install AdsPower
+wget https://version.adspower.net/software/linux-x64-global/AdsPower-Global-5.9.14-x64.deb
+sudo chmod 777 AdsPower-Global-5.9.14-x64.deb
+sudo dpkg -i AdsPower-Global-5.9.14-x64.deb
