@@ -54,7 +54,8 @@ gem install bundler -v '2.3.7'
 # - https://stackoverflow.com/questions/50642308/webdriverexception-unk
 #
 sudo wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/116.0.5845.96/linux64/chromedriver-linux64.zip
-unzip chromedriver_linux64.zip
+sudo chmod 777 chromedriver-linux64.zip
+unzip chromedriver-linux64.zip
 sudo mv chromedriver-linux64 /usr/bin/chromedriver
 sudo chown root:root /usr/bin/chromedriver
 sudo chmod +x /usr/bin/chromedriver
