@@ -4,6 +4,22 @@
 # If you connect via SSH, run this file using the following command:
 # /bin/bash --login install.sh
 
+# Install GUI on Contabo VPS
+# Reference: https://contabo.com/blog/installation-of-a-graphical-user-interface-for-linux/
+
+
+# Reference: https://phoenixnap.com/kb/how-to-install-a-gui-on-ubuntu
+sudo apt update && sudo apt upgrade
+#sudo apt install slim
+#sudo apt install ubuntu-desktop
+#sudo service slim start
+
+# Install XRDP
+# Reference: https://operavps.com/docs/install-xrdp-ubuntu/
+apt install xubuntu-desktop
+apt install xrdp
+systemctl enable xrdp
+
 # update packages
 echo "update packages"
 sudo apt -y update
@@ -75,13 +91,6 @@ sudo apt --fix-broken install
 sudo apt-get install apt-file
 sudo apt-file update
 apt-file search adspower
-
-# Install GUI
-# Reference: https://phoenixnap.com/kb/how-to-install-a-gui-on-ubuntu
-sudo apt update && sudo apt upgrade
-sudo apt install slim
-sudo apt install ubuntu-desktop
-sudo service slim start
 
 # Run AdsPower listener
 cd /usr/bin
