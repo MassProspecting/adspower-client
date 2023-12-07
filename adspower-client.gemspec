@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
     s.name        = 'adspower-client'
-    s.version     = '1.0.2'
-    s.date        = '2023-12-05'
+    s.version     = '1.0.3'
+    s.date        = '2023-12-07'
     s.summary     = "Ruby library for operating AdsPower API."
     s.description = "Ruby library for operating AdsPower API."
     s.authors     = ["Leandro Daniel Sardi"]
