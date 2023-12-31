@@ -97,9 +97,11 @@ Internal methods that you should handle to develop advanced bots.
 
 **Checking AdsPower Status**
 
+The `online?` method returns `true` if AdsPower API is available.
+
 ```ruby
-p client.status
-# => "success"
+p client.online?
+# => true
 ```
 
 **Creating Profile**
@@ -126,6 +128,15 @@ p client.start('jc8y5g3')
 
 ```ruby
 client.stop('jc8y5g3')
+```
+
+**Checking Profile**
+
+The `check` method returns `true` if the profile has been started.
+
+```ruby
+client.check('jc8y5g3')
+# => true
 ```
 
 **Operating Browser**

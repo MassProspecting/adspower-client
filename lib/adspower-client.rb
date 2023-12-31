@@ -18,17 +18,21 @@ class AdsPowerClient
 #        self.profiles_created = []
     end
 
-    # send an GET request to "#{url}/status"
-    # and return the response body.
+    # send an GET request to "#{url}/status".
+    # Return true if it responded successfully.
     # 
     # reference: https://localapi-doc-en.adspower.com/docs/6DSiws
     # 
-    def status
-        url = "#{self.adspower_listener}/status"
-        uri = URI.parse(url)
-        res = Net::HTTP.get(uri)
-        # show respose body
-        return JSON.parse(res)['msg']
+    def online?
+        begin
+            url = "#{self.adspower_listener}/status"
+            uri = URI.parse(url)
+            res = Net::HTTP.get(uri)
+            # show respose body
+            return JSON.parse(res)['msg'] == 'success'
+        rescue => e
+            return false
+        end
     end
 
     # send a post request to "#{url}/api/v1/user/create"
@@ -80,8 +84,8 @@ class AdsPowerClient
     # 
     # reference: https://localapi-doc-en.adspower.com/docs/FFMFMf
     # 
-    def start(id)
-        uri = URI.parse("#{self.adspower_listener}/api/v1/browser/start?user_id=#{id}&headless=1")
+    def start(id, headless=false)
+        uri = URI.parse("#{self.adspower_listener}/api/v1/browser/start?user_id=#{id}&headless=#{headless ? '1' : '0'}'}")
         res = Net::HTTP.get(uri)
         # show respose bo
         ret = JSON.parse(res)
@@ -105,9 +109,25 @@ class AdsPowerClient
         ret
     end
 
+    # send an GET request to "#{url}/status"
+    # and return if I get the json response['data']['status'] == 'Active'.
+    # Otherwise, return false.
+    # 
+    # reference: https://localapi-doc-en.adspower.com/docs/YjFggL
+    # 
+    def check(id)
+        url = "#{self.adspower_listener}/api/v1/browser/active?user_id=#{id}"
+        uri = URI.parse(url)
+        res = Net::HTTP.get(uri)
+        # show respose body
+        return false if JSON.parse(res)['msg'] != 'success'
+        # return
+        JSON.parse(res)['data']['status'] == 'Active'
+    end
+
     #
-    def driver(id)
-        ret = self.start(id)
+    def driver(id, headless=false)
+        ret = self.start(id, headless)
 
         # Attach test execution to the existing browser
         # reference: https://zhiminzhan.medium.com/my-innovative-solution-to-test-automation-attach-test-execution-to-the-existing-browser-b90cda3b7d4a
