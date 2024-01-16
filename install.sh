@@ -16,9 +16,8 @@ sudo apt update && sudo apt upgrade
 
 # Install XRDP
 # Reference: https://operavps.com/docs/install-xrdp-ubuntu/
-sudo apt install xubuntu-desktop
-sudo apt install xrdp
-sudo apt-get install curl
+sudo apt install -y xubuntu-desktop
+sudo apt install -y xrdp
 systemctl enable xrdp
 
 # update packages
@@ -35,6 +34,7 @@ sudo apt install -y sshpass
 sudo apt install -y xterm
 sudo apt install -y bc
 sudo apt install -y unzip
+sudo apt install -y curl
 
 # get private key for RVM
 echo "get private key for RVM"
