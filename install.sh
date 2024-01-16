@@ -51,9 +51,18 @@ bash /tmp/rvm.sh
 # reference: https://stackoverflow.com/questions/9336596/rvm-installation-not-working-rvm-is-not-a-function
 source ~/.rvm/scripts/rvm
 type rvm | head -n 1
+
+# fix: 
+# Warning: can not check `/etc/sudoers` for `secure_path`, falling back to call via `/usr/bin/env`, this breaks rules from `/etc/sudoers`.
+# Run `export rvmsudo_secure_path=1` to avoid the warning, put it in shell initialization to make it persistent.
+export rvmsudo_secure_path=1
+
 # install and run Ruby 3.1.2
+# reference: https://superuser.com/questions/376669/why-am-i-getting-rvm-command-not-found-on-ubuntu
+echo
 echo "install Ruby 3.1.2"
-~/.rvm/bin/rvm install 3.1.2
+rvmsudo rvm install 3.1.2
+
 # set 3.1.2 as default Ruby version
 echo "set 3.1.2 as default Ruby version"
 rvm --default use 3.1.2
