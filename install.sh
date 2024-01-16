@@ -16,8 +16,9 @@ sudo apt update && sudo apt upgrade
 
 # Install XRDP
 # Reference: https://operavps.com/docs/install-xrdp-ubuntu/
-apt install xubuntu-desktop
-apt install xrdp
+sudo apt install xubuntu-desktop
+sudo apt install xrdp
+sudo apt-get install curl
 systemctl enable xrdp
 
 # update packages
