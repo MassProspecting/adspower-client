@@ -78,8 +78,10 @@ sudo wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/116.0.5845
 sudo chmod 777 chromedriver-linux64.zip
 unzip chromedriver-linux64.zip
 sudo mv chromedriver-linux64 /usr/bin
-sudo chown root:root /usr/bin/chromedriver
-sudo chmod +x /usr/bin/chromedriver
+sudo rm -r /usr/bin/chromedriver-linux64
+sudo chown root:root /usr/bin/chromedriver-linux64
+sudo chmod +x /usr/bin/chromedriver-linux64
+sudo mv /usr/bin/chromedriver-linux64/chromedriver /usr/bin/
 
 # Install AdsPower
 wget https://version.adspower.net/software/linux-x64-global/AdsPower-Global-5.9.14-x64.deb
