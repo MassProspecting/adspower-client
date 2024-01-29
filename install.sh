@@ -61,6 +61,9 @@ ruby -v
 echo "install git"
 sudo apt install -y git
 
+# grant me permission on ~/.rvm and all its subdirectories
+sudo chmod -R 777 ~/.rvm
+
 # install bundler
 echo "install bundler"
 gem install bundler -v '2.3.7'
@@ -73,10 +76,8 @@ sudo wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/116.0.5845
 sudo chmod 777 chromedriver-linux64.zip
 unzip chromedriver-linux64.zip
 sudo mv chromedriver-linux64 /usr/bin
-sudo rm -r /usr/bin/chromedriver-linux64
-sudo chown root:root /usr/bin/chromedriver-linux64
-sudo chmod +x /usr/bin/chromedriver-linux64
-sudo mv /usr/bin/chromedriver-linux64/chromedriver /usr/bin/
+sudo chown root:root /usr/bin/chromedriver
+sudo chmod +x /usr/bin/chromedriver
 
 # Install AdsPower
 wget https://version.adspower.net/software/linux-x64-global/AdsPower-Global-5.9.14-x64.deb
