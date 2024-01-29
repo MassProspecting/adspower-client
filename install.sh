@@ -26,10 +26,13 @@ sudo apt install -y curl
 # get private key for RVM
 echo "get private key for RVM"
 gpg2 --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-# move into a writable location such as the /tmp to download RVM
+
+# move into a writable location such as the /tmp
+echo "move into a writable location such as the /tmp"
+cd /tmp
+
 # download RVM
 echo "download rvm"
-cd /tmp
 curl -sSL https://get.rvm.io -o rvm.sh
 # install the latest stable Rails version
 echo "install rvm"
@@ -75,15 +78,17 @@ gem install bundler -v '2.3.7'
 sudo wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/116.0.5845.96/linux64/chromedriver-linux64.zip
 sudo chmod 777 chromedriver-linux64.zip
 unzip chromedriver-linux64.zip
-sudo mv chromedriver-linux64 /usr/bin
+sudo mv chromedriver-linux64/* /usr/bin
 sudo chown root:root /usr/bin/chromedriver
 sudo chmod +x /usr/bin/chromedriver
+sudo rm -rf ./chromedriver-linux64.zip
+sudo rm -rf ./chromedriver-linux64
 
 # Install AdsPower
 wget https://version.adspower.net/software/linux-x64-global/AdsPower-Global-5.9.14-x64.deb
 sudo chmod 777 AdsPower-Global-5.9.14-x64.deb
 sudo dpkg -i AdsPower-Global-5.9.14-x64.deb
-sudo apt install -y AdsPower-Global-5.9.14-x64.deb
+sudo apt install -y ./AdsPower-Global-5.9.14-x64.deb
 
 # Find the location of adspower command
 sudo apt --fix-broken install
