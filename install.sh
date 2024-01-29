@@ -97,5 +97,10 @@ sudo apt-get install -y apt-file
 sudo apt-file update
 apt-file search adspower
 
+# install PostgreSQL dev package with header of PostgreSQL
+# this is required for calling the gem pg from bundler
+sudo apt-get install -y libpq-dev
+
+
 
 
