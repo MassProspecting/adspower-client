@@ -89,6 +89,7 @@ wget https://version.adspower.net/software/linux-x64-global/AdsPower-Global-5.9.
 sudo chmod 777 AdsPower-Global-5.9.14-x64.deb
 sudo dpkg -i AdsPower-Global-5.9.14-x64.deb
 sudo apt install -y ./AdsPower-Global-5.9.14-x64.deb
+sudo rm -rf ./AdsPower-Global-5.9.14-x64.deb
 
 # Find the location of adspower command
 sudo apt --fix-broken install
