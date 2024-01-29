@@ -7,19 +7,6 @@
 # Install GUI on Contabo VPS
 # Reference: https://contabo.com/blog/installation-of-a-graphical-user-interface-for-linux/
 
-
-# Reference: https://phoenixnap.com/kb/how-to-install-a-gui-on-ubuntu
-sudo apt update && sudo apt upgrade
-#sudo apt install slim
-#sudo apt install ubuntu-desktop
-#sudo service slim start
-
-# Install XRDP
-# Reference: https://operavps.com/docs/install-xrdp-ubuntu/
-sudo apt install -y xubuntu-desktop
-sudo apt install -y xrdp
-systemctl enable xrdp
-
 # update packages
 echo "update packages"
 sudo apt -y update
@@ -29,10 +16,10 @@ sudo apt -y upgrade
 echo "install other required packages"
 sudo apt install -y net-tools
 sudo apt install -y gnupg2
-sudo apt install -y nginx
-sudo apt install -y sshpass
-sudo apt install -y xterm
-sudo apt install -y bc
+#sudo apt install -y nginx
+#sudo apt install -y sshpass
+#sudo apt install -y xterm
+#sudo apt install -y bc
 sudo apt install -y unzip
 sudo apt install -y curl
 
@@ -66,15 +53,14 @@ rvmsudo rvm install 3.1.2
 # set 3.1.2 as default Ruby version
 echo "set 3.1.2 as default Ruby version"
 rvm --default use 3.1.2
+
 # check ruby installed
-#ruby -v
+ruby -v
 
 # install git
 echo "install git"
 sudo apt install -y git
-# install PostgreSQL dev package with header of PostgreSQL
-echo "install PostgreSQL dev package with header of PostgreSQL"
-sudo apt-get install -y libpq-dev
+
 # install bundler
 echo "install bundler"
 gem install bundler -v '2.3.7'
@@ -96,17 +82,13 @@ sudo mv /usr/bin/chromedriver-linux64/chromedriver /usr/bin/
 wget https://version.adspower.net/software/linux-x64-global/AdsPower-Global-5.9.14-x64.deb
 sudo chmod 777 AdsPower-Global-5.9.14-x64.deb
 sudo dpkg -i AdsPower-Global-5.9.14-x64.deb
-sudo apt install AdsPower-Global-5.9.14-x64.deb
+sudo apt install -y AdsPower-Global-5.9.14-x64.deb
 
 # Find the location of adspower command
 sudo apt --fix-broken install
-sudo apt-get install apt-file
+sudo apt-get install -y apt-file
 sudo apt-file update
 apt-file search adspower
-
-# Run AdsPower listener
-cd /usr/bin
-adspower_global --args --headless=true --api-key=4752e0440288b0ce8fe2c159daef0bbb --api-port=50325
 
 
 
