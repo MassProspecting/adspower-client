@@ -3,11 +3,9 @@
 # Reference: https://github.com/leandrosardi/adspower-client/issues/4
 # 
 
-require 'adspower-client'
-#require_relative '../lib/adspower-client'
+#require 'adspower-client'
+require_relative '../lib/adspower-client'
 require 'pry'
-
-l = BlackStack::LocalLogger.new('check.log')
 
 ADSPOWER_API_KEY = '00db0bb239d8c95acbfdf03ab8eb1414'
 PROFILE_ID = 'jdus77h'
