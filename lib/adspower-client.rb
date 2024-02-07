@@ -103,6 +103,12 @@ class AdsPowerClient
     # reference: https://localapi-doc-en.adspower.com/docs/DXam94
     # 
     def stop(id)
+        # if the profile is running with driver, kill chromedriver
+        if @@drivers[id] && self.check(id)
+            @@drivers[id].quit
+            @@drivers[id] = nil
+        end
+
         uri = URI.parse("#{self.adspower_listener}/api/v1/browser/stop?user_id=#{id}")
         res = Net::HTTP.get(uri)
         # show respose body
