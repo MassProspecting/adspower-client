@@ -9,7 +9,10 @@ class AdsPowerClient
     # reference: https://localapi-doc-en.adspower.com/
     # reference: https://localapi-doc-en.adspower.com/docs/Rdw7Iu
     attr_accessor :key, :adspower_listener, :adspower_default_browser_version
-#    attr_accessor :profiles_created
+    
+    # control over the drivers created, in order to don't create the same driver twice and don't generate memory leaks.
+    # reference: https://github.com/leandrosardi/adspower-client/issues/4
+    @@drivers = {}
 
     def initialize(h={})
         self.key = h[:key] # mandatory
@@ -128,7 +131,11 @@ class AdsPowerClient
     #
     def driver(id, headless=false)
         ret = self.start(id, headless)
+        old = @@drivers[id]
 
+        # si este driver sigue activo, lo devuelvo
+        return old if old && self.check(id)
+        
         # Attach test execution to the existing browser
         # reference: https://zhiminzhan.medium.com/my-innovative-solution-to-test-automation-attach-test-execution-to-the-existing-browser-b90cda3b7d4a
         url = ret['data']['ws']['selenium']
@@ -138,6 +145,9 @@ class AdsPowerClient
         # connect to the existing browser
         # reference: https://localapi-doc-en.adspower.com/docs/K4IsTq
         driver = Selenium::WebDriver.for(:chrome, :options=>opts)
+
+        # save the driver
+        @@drivers[id] = driver
 
         # return
         driver
