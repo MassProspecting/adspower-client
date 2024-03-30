@@ -3,12 +3,11 @@
 # Reference: https://github.com/leandrosardi/adspower-client/issues/4
 # 
 
-#require 'adspower-client'
-require_relative '../lib/adspower-client'
+require 'adspower-client'
 require 'pry'
 
-ADSPOWER_API_KEY = '00db0bb239d8c95acbfdf03ab8eb1414'
-PROFILE_ID = 'jdus77h'
+ADSPOWER_API_KEY = 'd21e62f903efff0cb309f96342b35029'
+PROFILE_ID = 'jg2e5ck'
 
 client = AdsPowerClient.new(key: ADSPOWER_API_KEY)
 

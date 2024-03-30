@@ -8,7 +8,7 @@ require 'watir'
 class AdsPowerClient    
     # reference: https://localapi-doc-en.adspower.com/
     # reference: https://localapi-doc-en.adspower.com/docs/Rdw7Iu
-    attr_accessor :key, :adspower_listener, :adspower_default_browser_version
+    attr_accessor :key, :port, :server_log, :adspower_listener, :adspower_default_browser_version
     
     # control over the drivers created, in order to don't create the same driver twice and don't generate memory leaks.
     # reference: https://github.com/leandrosardi/adspower-client/issues/4
@@ -16,11 +16,47 @@ class AdsPowerClient
 
     def initialize(h={})
         self.key = h[:key] # mandatory
-        self.adspower_listener = h[:adspower_listener] || 'http://127.0.0.1:50325'
+        self.port = h[:port] || '50325'
+        self.server_log = h[:server_log] || '~/adspower-client.log'
+        self.adspower_listener = h[:adspower_listener] || 'http://127.0.0.1'
         self.adspower_default_browser_version = h[:adspower_default_browser_version] || '116'
 #        self.profiles_created = []
     end
 
+    # return an array of PIDs of all the adspower_global processes running in the local computer.
+    def server_pids
+        `ps aux | grep "adspower_global" | grep -v grep | awk '{print $2}'`.split("\n")
+    end
+
+    # return true if there is any adspower_global process running in the local computer.
+    def server_running?
+        self.server_pids.size > 0
+    end
+
+    # run async command to start adspower server in headless mode.
+    # wait up to 10 seconds to start the server, or raise an exception.
+    def server_start(timeout=10)
+        `/usr/bin/adspower_global --headless=true --api-key=#{ADSPOWER_API_KEY} --api-port=#{ADSPOWER_PORT} > #{self.server_log} 2>&1 &`
+        # wait up to 10 seconds to start the server
+        timeout.times do
+            break if self.server_running?
+            sleep(1)
+        end
+        # add a delay of 5 more seconds
+        sleep(5)
+        # raise an exception if the server is not running
+        raise "Error: the server is not running" if self.server_running? == false
+        return
+    end
+
+    # kill all the adspower_global processes running in the local computer.
+    def server_stop
+        self.server_pids.each { |pid|
+            `kill -9 #{pid}`
+        }
+        return
+    end
+    
     # send an GET request to "#{url}/status".
     # Return true if it responded successfully.
     # 
@@ -28,7 +64,7 @@ class AdsPowerClient
     # 
     def online?
         begin
-            url = "#{self.adspower_listener}/status"
+            url = "#{self.adspower_listener}:#{port}/status"
             uri = URI.parse(url)
             res = Net::HTTP.get(uri)
             # show respose body
@@ -48,7 +84,7 @@ class AdsPowerClient
     # reference: https://localapi-doc-en.adspower.com/docs/Awy6Dg
     # 
     def create
-        url = "#{self.adspower_listener}/api/v1/user/create"
+        url = "#{self.adspower_listener}:#{port}/api/v1/user/create"
         body = {
             #'api_key' => self.key,
             'group_id' => '0',
@@ -69,7 +105,7 @@ class AdsPowerClient
     end
 
     def delete(id)
-        url = "#{self.adspower_listener}/api/v1/user/delete"
+        url = "#{self.adspower_listener}:#{port}/api/v1/user/delete"
         body = {
             'api_key' => self.key,
             'user_ids' => [id],
@@ -88,7 +124,8 @@ class AdsPowerClient
     # reference: https://localapi-doc-en.adspower.com/docs/FFMFMf
     # 
     def start(id, headless=false)
-        uri = URI.parse("#{self.adspower_listener}/api/v1/browser/start?user_id=#{id}&headless=#{headless ? '1' : '0'}'}")
+        url = "#{self.adspower_listener}:#{port}/api/v1/browser/start?user_id=#{id}&headless=#{headless ? '1' : '0'}"
+        uri = URI.parse(url)
         res = Net::HTTP.get(uri)
         # show respose bo
         ret = JSON.parse(res)
@@ -109,7 +146,7 @@ class AdsPowerClient
             @@drivers[id] = nil
         end
 
-        uri = URI.parse("#{self.adspower_listener}/api/v1/browser/stop?user_id=#{id}")
+        uri = URI.parse("#{self.adspower_listener}:#{port}/api/v1/browser/stop?user_id=#{id}")
         res = Net::HTTP.get(uri)
         # show respose body
         ret = JSON.parse(res)
@@ -125,7 +162,7 @@ class AdsPowerClient
     # reference: https://localapi-doc-en.adspower.com/docs/YjFggL
     # 
     def check(id)
-        url = "#{self.adspower_listener}/api/v1/browser/active?user_id=#{id}"
+        url = "#{self.adspower_listener}:#{port}/api/v1/browser/active?user_id=#{id}"
         uri = URI.parse(url)
         res = Net::HTTP.get(uri)
         # show respose body
