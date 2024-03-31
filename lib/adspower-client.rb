@@ -32,7 +32,7 @@ class AdsPowerClient
 
     # run async command to start adspower server in headless mode.
     # wait up to 10 seconds to start the server, or raise an exception.
-    def server_start(timeout=10)
+    def server_start(timeout=30)
         `xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24' /usr/bin/adspower_global --headless=true --api-key=#{ADSPOWER_API_KEY} --api-port=#{ADSPOWER_PORT} > #{self.server_log} 2>&1 &`
         # wait up to 10 seconds to start the server
         timeout.times do
