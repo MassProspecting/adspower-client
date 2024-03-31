@@ -14,7 +14,11 @@ require_relative './config'
 filename = "screenshot4.png"
 
 # create an adspower client
-client = AdsPowerClient.new(key: ADSPOWER_API_KEY, port: ADSPOWER_PORT)
+client = AdsPowerClient.new(
+    key: ADSPOWER_API_KEY, 
+    port: ADSPOWER_PORT,
+    server_log: '~/foo.log',
+)
 
 # start the server
 client.server_start if client.online? == false
