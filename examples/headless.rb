@@ -3,10 +3,12 @@
 # Reference: https://github.com/leandrosardi/adspower-client/issues/4
 # 
 
+require 'pry'
+require 'my-dropbox-api'
+
 #require 'adspower-client'
 require_relative '../lib/adspower-client'
 require_relative './config'
-require 'pry'
 
 #
 filename = "screenshot4.png"
