@@ -141,7 +141,7 @@ client.server_start
 ```
 
 The server will listen the port `50325` by default. 
-You can set a custom port
+You can set a custom port:
 
 ```ruby
 client = AdsPowerClient.new(
