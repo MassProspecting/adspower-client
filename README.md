@@ -9,6 +9,7 @@ Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](htt
 1. [Installation](#1-installation)
 2. [Scraping](#2-scraping)
 3. [Advanced](#3-advanced)
+4. [Headless](#4-headless)
 
 ## 1. Installation
 
@@ -143,5 +144,43 @@ id = 'jc8y5g3'
 url = 'https://google.com'
 driver = client.driver(id)
 driver.get(url)
+```
+
+## 4. Headless
+
+This chapter explains the operations for working with the AdsPower server and browser in headless mode.
+
+**Starting the AdsPower server**
+
+To start the AdsPower server, use the `server_start` method:
+
+```ruby
+client = AdsPowerClient.new(key: YOUR_API_KEY)
+client.server_start
+```
+
+**Stopping the AdsPower server**
+
+To stop the AdsPower server, use the `server_stop` method:
+
+```ruby
+client.server_stop
+```
+
+**Checking if the server is running**
+
+You can verify whether the server is running with the `server_running?` method:
+
+```ruby
+puts client.server_running? ? "Server is running" : "Server is stopped"
+```
+
+**Starting a browser in headless mode**
+
+Pass `true` as the second parameter to the `driver` method to start a browser in headless mode:
+
+```ruby
+client = AdsPowerClient.new(key: YOUR_API_KEY)
+driver = client.driver(PROFILE_ID, true)
 ```
 
