@@ -10,6 +10,7 @@ Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](htt
 2. [Scraping](#2-scraping)
 3. [Advanced](#3-advanced)
 4. [Headless](#4-headless)
+5. [Logging](#5-logging)
 
 ## 1. Installation
 
@@ -40,6 +41,11 @@ client = AdsPowerClient.new(
     key: '************************',
 )
 ```
+
+Remember to open and login to the AdsPower app, as is shown in the picture below.
+In the [chatper 4 (Headless)](#4-headless) you will see how to run AdsPower in headless mode.
+
+![Logging into AdsPower app](./images/adspower1.png)
 
 ## 2. Scraping
 
@@ -134,6 +140,16 @@ client = AdsPowerClient.new(key: YOUR_API_KEY)
 client.server_start
 ```
 
+The server will listen the port `50325` by default. 
+You can set a custom port
+
+```ruby
+client = AdsPowerClient.new(
+    key: YOUR_API_KEY,
+    port: 8082,
+)
+```
+
 **Stopping the AdsPower server**
 
 To stop the AdsPower server, use the `server_stop` method:
@@ -159,3 +175,19 @@ client = AdsPowerClient.new(key: YOUR_API_KEY)
 driver = client.driver(PROFILE_ID, true)
 ```
 
+## 5. Logging
+
+The `server_start` method seen in [chatper 4 (Headless)](#4-headless) runs a bash line to start the AdsPower server.
+
+Such a bash line redirects both `stdout` and `stderr` to `~/adspower-client.log`.
+
+Check such a logfile if you face any problem to start the AdsPower server.
+
+Feel free to change the location and name for the log:
+
+```ruby
+client = AdsPowerClient.new(
+    key: '************************',
+    server_log: '~/foo.log'
+)
+```
