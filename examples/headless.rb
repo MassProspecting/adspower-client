@@ -5,14 +5,11 @@
 
 #require 'adspower-client'
 require_relative '../lib/adspower-client'
-
+require_relative './config'
 require 'pry'
 
-ADSPOWER_API_KEY = '3213164fbf463df42e11c9bffd0d14a3'
-ADSPOWER_PORT = '50325'
-
-PROFILE_ID = 'jg2e5ck'
-HEADLESS = true
+#
+filename = "screenshot4.png"
 
 # create an adspower client
 client = AdsPowerClient.new(key: ADSPOWER_API_KEY, port: ADSPOWER_PORT)
@@ -38,7 +35,10 @@ puts driver.title
 driver.manage.window.maximize
 
 # take screenshot
-driver.save_screenshot("/tmp/screenshot4.png")
+driver.save_screenshot("/tmp/#{filename}")
+
+# upload screenshot to dropbox
+BlackStack::DropBox.dropbox_upload_file("/tmp/#{filename}", "/#{filename}")
 
 # close the browser
 driver.quit

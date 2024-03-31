@@ -1,3 +1,4 @@
 /examples/*.log
 /examples/*.html
 /examples/*.pem
+/examples/config.rb
