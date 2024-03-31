@@ -24,10 +24,6 @@ Finally, you can write code for AdsPower automation.
 wget https://raw.githubusercontent.com/leandrosardi/environment/main/sh/install.ubuntu.20_04.sh -O - | bash
 ```
 
-```bash
-wget https://raw.githubusercontent.com/leandrosardi/environment/main/sh/install.ubuntu.20_04.adspower.sh -O - | bash
-```
-
 **Installing Gem:**
 
 ```bash
