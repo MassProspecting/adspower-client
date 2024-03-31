@@ -29,9 +29,6 @@ class AdsPowerClient
     end
 
     # return true if there is any adspower_global process running in the local computer.
-    def server_running?
-        self.server_pids.size > 0
-    end
 
     # run async command to start adspower server in headless mode.
     # wait up to 10 seconds to start the server, or raise an exception.
@@ -39,13 +36,13 @@ class AdsPowerClient
         `/usr/bin/adspower_global --headless=true --api-key=#{ADSPOWER_API_KEY} --api-port=#{ADSPOWER_PORT} > #{self.server_log} 2>&1 &`
         # wait up to 10 seconds to start the server
         timeout.times do
-            break if self.server_running?
+            break if self.online?
             sleep(1)
         end
         # add a delay of 5 more seconds
         sleep(5)
         # raise an exception if the server is not running
-        raise "Error: the server is not running" if self.server_running? == false
+        raise "Error: the server is not running" if self.online? == false
         return
     end
 

@@ -169,10 +169,10 @@ client.server_stop
 
 **Checking if the server is running**
 
-You can verify whether the server is running with the `server_running?` method:
+You can verify whether the server is running with the `online?` method:
 
 ```ruby
-puts client.server_running? ? "Server is running" : "Server is stopped"
+puts client.online? ? "Server is running" : "Server is stopped"
 ```
 
 **Starting a browser in headless mode**

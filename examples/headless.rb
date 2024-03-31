@@ -8,17 +8,17 @@ require_relative '../lib/adspower-client'
 
 require 'pry'
 
-ADSPOWER_API_KEY = 'd21e62f903efff0cb309f96342b35029'
+ADSPOWER_API_KEY = '3213164fbf463df42e11c9bffd0d14a3'
 ADSPOWER_PORT = '50325'
 
 PROFILE_ID = 'jg2e5ck'
-HEADLESS = false
+HEADLESS = true
 
 # create an adspower client
 client = AdsPowerClient.new(key: ADSPOWER_API_KEY, port: ADSPOWER_PORT)
 
 # start the server
-client.server_start if client.server_running? == false
+client.server_start if client.online? == false
 
 # open the browser
 driver = client.driver(PROFILE_ID, HEADLESS)
@@ -31,14 +31,14 @@ driver.get('https://google.com')
 puts driver.title
 
 # visit to https://mercadolibre.com
-#driver.get('https://mercadolibre.com')
-#puts driver.title
+driver.get('https://mercadolibre.com')
+puts driver.title
 
 # maximize window
 driver.manage.window.maximize
 
 # take screenshot
-driver.save_screenshot("/tmp/screenshot3.png")
+driver.save_screenshot("/tmp/screenshot4.png")
 
 # close the browser
 driver.quit
