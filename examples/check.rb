@@ -6,8 +6,8 @@
 require 'adspower-client'
 require 'pry'
 
-ADSPOWER_API_KEY = 'd21e62f903efff0cb309f96342b35029'
-PROFILE_ID = 'jg2e5ck'
+ADSPOWER_API_KEY = '0d92ca77432a5ecc49464ea92d779def'
+PROFILE_ID = 'jhshn1p'
 
 client = AdsPowerClient.new(key: ADSPOWER_API_KEY)
 

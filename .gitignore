@@ -2,3 +2,4 @@
 /examples/*.html
 /examples/*.pem
 /examples/config.rb
+.sandbox
