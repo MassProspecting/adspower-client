@@ -4,15 +4,18 @@ require 'json'
 require 'blackstack-core'
 require 'selenium-webdriver'
 require 'watir'
+require 'fileutils'
 
 class AdsPowerClient    
     # reference: https://localapi-doc-en.adspower.com/
     # reference: https://localapi-doc-en.adspower.com/docs/Rdw7Iu
     attr_accessor :key, :port, :server_log, :adspower_listener, :adspower_default_browser_version
-    
-    # control over the drivers created, in order to don't create the same driver twice and don't generate memory leaks.
+
+    # control over the drivers created, in order to not create the same driver twice and not generate memory leaks.
     # reference: https://github.com/leandrosardi/adspower-client/issues/4
     @@drivers = {}
+
+    LOCK_FILE = '/tmp/adspower_api_lock'
 
     def initialize(h={})
         self.key = h[:key] # mandatory
@@ -20,18 +23,34 @@ class AdsPowerClient
         self.server_log = h[:server_log] || '~/adspower-client.log'
         self.adspower_listener = h[:adspower_listener] || 'http://127.0.0.1'
         self.adspower_default_browser_version = h[:adspower_default_browser_version] || '116'
-#        self.profiles_created = []
     end
 
-    # return an array of PIDs of all the adspower_global processes running in the local computer.
+    # Acquire the lock
+    def acquire_lock
+        @lockfile ||= File.open(LOCK_FILE, File::CREAT | File::RDWR)
+        @lockfile.flock(File::LOCK_EX)
+    end
+
+    # Release the lock
+    def release_lock
+        @lockfile.flock(File::LOCK_UN) if @lockfile
+    end
+
+    # Wrapper method for critical sections
+    def with_lock
+        acquire_lock
+        yield
+    ensure
+        release_lock
+    end
+
+    # Return an array of PIDs of all the adspower_global processes running on the local computer.
     def server_pids
         `ps aux | grep "adspower_global" | grep -v grep | awk '{print $2}'`.split("\n")
     end
 
-    # return true if there is any adspower_global process running in the local computer.
-
-    # run async command to start adspower server in headless mode.
-    # wait up to 10 seconds to start the server, or raise an exception.
+    # Run async command to start AdsPower server in headless mode.
+    # Wait up to 10 seconds to start the server, or raise an exception.
     def server_start(timeout=30)
         `xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24' /usr/bin/adspower_global --headless=true --api-key=#{self.key.to_s} --api-port=#{self.port.to_s} > #{self.server_log} 2>&1 &`
         # wait up to 10 seconds to start the server
@@ -46,161 +65,128 @@ class AdsPowerClient
         return
     end
 
-    # kill all the adspower_global processes running in the local computer.
+    # Kill all the adspower_global processes running on the local computer.
     def server_stop
-        self.server_pids.each { |pid|
-            `kill -9 #{pid}`
-        }
+        with_lock do
+            self.server_pids.each { |pid|
+                `kill -9 #{pid}`
+            }
+        end
         return
     end
-    
-    # send an GET request to "#{url}/status".
-    # Return true if it responded successfully.
-    # 
-    # reference: https://localapi-doc-en.adspower.com/docs/6DSiws
-    # 
+
+    # Send a GET request to "#{url}/status" and return true if it responded successfully.
     def online?
-        begin
-            url = "#{self.adspower_listener}:#{port}/status"
+        with_lock do
+            begin
+                url = "#{self.adspower_listener}:#{port}/status"
+                uri = URI.parse(url)
+                res = Net::HTTP.get(uri)
+                return JSON.parse(res)['msg'] == 'success'
+            rescue => e
+                return false
+            end
+        end
+    end
+
+    # Create a new user profile via API call and return the ID of the created user.
+    def create
+        with_lock do
+            url = "#{self.adspower_listener}:#{port}/api/v1/user/create"
+            body = {
+                'group_id' => '0',
+                'proxyid' => '1',
+                'fingerprint_config' => {
+                    'browser_kernel_config' => {"version": self.adspower_default_browser_version, "type": "chrome"}
+                }
+            }
+            # API call
+            res = BlackStack::Netting.call_post(url, body)
+            ret = JSON.parse(res.body)
+            raise "Error: #{ret.to_s}" if ret['msg'].to_s.downcase != 'success'
+            ret['data']['id']
+        end
+    end
+
+    # Delete a user profile via API call.
+    def delete(id)
+        with_lock do
+            url = "#{self.adspower_listener}:#{port}/api/v1/user/delete"
+            body = {
+                'api_key' => self.key,
+                'user_ids' => [id],
+            }
+            # API call
+            res = BlackStack::Netting.call_post(url, body)
+            ret = JSON.parse(res.body)
+            raise "Error: #{ret.to_s}" if ret['msg'].to_s.downcase != 'success'
+        end
+    end
+
+    # Start the browser with the given user profile and return the connection details.
+    def start(id, headless=false)
+        with_lock do
+            url = "#{self.adspower_listener}:#{port}/api/v1/browser/start?user_id=#{id}&headless=#{headless ? '1' : '0'}"
             uri = URI.parse(url)
             res = Net::HTTP.get(uri)
-            # show respose body
-            return JSON.parse(res)['msg'] == 'success'
-        rescue => e
-            return false
+            ret = JSON.parse(res)
+            raise "Error: #{ret.to_s}" if ret['msg'].to_s.downcase != 'success'
+            ret
         end
     end
 
-    # send a post request to "#{url}/api/v1/user/create"
-    # and return the response body.
-    #
-    # return id of the created user
-    # 
-    # reference: https://localapi-doc-en.adspower.com/docs/6DSiws
-    # reference: https://localapi-doc-en.adspower.com/docs/Lb8pOg
-    # reference: https://localapi-doc-en.adspower.com/docs/Awy6Dg
-    # 
-    def create
-        url = "#{self.adspower_listener}:#{port}/api/v1/user/create"
-        body = {
-            #'api_key' => self.key,
-            'group_id' => '0',
-            'proxyid' => '1',
-            'fingerprint_config' => {
-                'browser_kernel_config' => {"version": self.adspower_default_browser_version, "type":"chrome"}
-            }
-        }
-        # api call
-        res = BlackStack::Netting.call_post(url, body)
-        # show respose body
-        ret = JSON.parse(res.body)
-        raise "Error: #{ret.to_s}" if ret['msg'].to_s.downcase != 'success'
-        # add to array of profiles created
-#        self.profiles_created << ret
-        # return id of the created user
-        ret['data']['id']
-    end
-
-    def delete(id)
-        url = "#{self.adspower_listener}:#{port}/api/v1/user/delete"
-        body = {
-            'api_key' => self.key,
-            'user_ids' => [id],
-        }
-        # api call
-        res = BlackStack::Netting.call_post(url, body)
-        # show respose body
-        ret = JSON.parse(res.body)
-        # validation
-        raise "Error: #{ret.to_s}" if ret['msg'].to_s.downcase != 'success'
-    end
-
-    # run the browser
-    # return the URL to operate the browser thru selenium
-    # 
-    # reference: https://localapi-doc-en.adspower.com/docs/FFMFMf
-    # 
-    def start(id, headless=false)
-        url = "#{self.adspower_listener}:#{port}/api/v1/browser/start?user_id=#{id}&headless=#{headless ? '1' : '0'}"
-        uri = URI.parse(url)
-        res = Net::HTTP.get(uri)
-        # show respose bo
-        ret = JSON.parse(res)
-        raise "Error: #{ret.to_s}" if ret['msg'].to_s.downcase != 'success'
-        # return id of the created user
-        ret
-    end
-
-    # run the browser
-    # return the URL to operate the browser thru selenium
-    # 
-    # reference: https://localapi-doc-en.adspower.com/docs/DXam94
-    # 
+    # Stop the browser session for the given user profile.
     def stop(id)
-        # if the profile is running with driver, kill chromedriver
-        if @@drivers[id] && self.check(id)
-            @@drivers[id].quit
-            @@drivers[id] = nil
+        with_lock do
+            if @@drivers[id] && self.check(id)
+                @@drivers[id].quit
+                @@drivers[id] = nil
+            end
+
+            uri = URI.parse("#{self.adspower_listener}:#{port}/api/v1/browser/stop?user_id=#{id}")
+            res = Net::HTTP.get(uri)
+            ret = JSON.parse(res)
+            raise "Error: #{ret.to_s}" if ret['msg'].to_s.downcase != 'success'
+            ret
         end
-
-        uri = URI.parse("#{self.adspower_listener}:#{port}/api/v1/browser/stop?user_id=#{id}")
-        res = Net::HTTP.get(uri)
-        # show respose body
-        ret = JSON.parse(res)
-        raise "Error: #{ret.to_s}" if ret['msg'].to_s.downcase != 'success'
-        # return id of the created user
-        ret
     end
 
-    # send an GET request to "#{url}/status"
-    # and return if I get the json response['data']['status'] == 'Active'.
-    # Otherwise, return false.
-    # 
-    # reference: https://localapi-doc-en.adspower.com/docs/YjFggL
-    # 
+    # Check if the browser session for the given user profile is active.
     def check(id)
-        url = "#{self.adspower_listener}:#{port}/api/v1/browser/active?user_id=#{id}"
-        uri = URI.parse(url)
-        res = Net::HTTP.get(uri)
-        # show respose body
-        return false if JSON.parse(res)['msg'] != 'success'
-        # return
-        JSON.parse(res)['data']['status'] == 'Active'
+        with_lock do
+            url = "#{self.adspower_listener}:#{port}/api/v1/browser/active?user_id=#{id}"
+            uri = URI.parse(url)
+            res = Net::HTTP.get(uri)
+            return false if JSON.parse(res)['msg'] != 'success'
+            JSON.parse(res)['data']['status'] == 'Active'
+        end
     end
 
-    #
+    # Attach to the existing browser session with Selenium WebDriver.
     def driver(id, headless=false)
-        ret = self.start(id, headless)
+        # Return the existing driver if it's still active.
         old = @@drivers[id]
+        return old if old
 
-        # si este driver sigue activo, lo devuelvo
-        return old if old && self.check(id)
-        
+        # Otherwise, start the driver
+        ret = self.start(id, headless)
+
         # Attach test execution to the existing browser
-        # reference: https://zhiminzhan.medium.com/my-innovative-solution-to-test-automation-attach-test-execution-to-the-existing-browser-b90cda3b7d4a
         url = ret['data']['ws']['selenium']
         opts = Selenium::WebDriver::Chrome::Options.new
         opts.add_option("debuggerAddress", url)
 
-        # connect to the existing browser
-        # reference: https://localapi-doc-en.adspower.com/docs/K4IsTq
-        driver = Selenium::WebDriver.for(:chrome, :options=>opts)
+        # Connect to the existing browser
+        driver = Selenium::WebDriver.for(:chrome, options: opts)
 
-        # save the driver
+        # Save the driver
         @@drivers[id] = driver
 
-        # return
+        # Return the driver
         driver
-    end # def driver
+    end
 
-    # create a new profile
-    # start the browser
-    # visit the page
-    # grab the html
-    # quit the browser from webdriver
-    # stop the broser from adspower
-    # delete the profile
-    # return the html
+    # Create a new profile, start the browser, visit a page, grab the HTML, and clean up.
     def html(url)
         ret = {
             :profile_id => nil,
@@ -210,44 +196,44 @@ class AdsPowerClient
         id = nil
         html = nil
         begin
-            # create the profile
-            sleep(1) # Avoid the "Too many request per second" error
+            # Create the profile
+            sleep(1)
             id = self.create
 
-            # update the result
+            # Update the result
             ret[:profile_id] = id
 
-            # start the profile and attach the driver
+            # Start the profile and attach the driver
             driver = self.driver(id)
 
-            # get html
+            # Get HTML
             driver.get(url)
             html = driver.page_source
 
-            # update the result
+            # Update the result
             ret[:html] = html
 
-            # stop the profile
-            sleep(1) # Avoid the "Too many request per second" error
+            # Stop the profile
+            sleep(1)
             driver.quit
             self.stop(id)
 
-            # delete the profile
-            sleep(1) # Avoid the "Too many request per second" error
+            # Delete the profile
+            sleep(1)
             self.delete(id)
 
-            # reset id
+            # Reset ID
             id = nil
         rescue => e
-            # stop and delete current profile
+            # Stop and delete current profile if an error occurs
             if id
-                sleep(1) # Avoid the "Too many request per second" error
+                sleep(1)
                 self.stop(id)
-                sleep(1) # Avoid the "Too many request per second" error
-                driver.quit
+                sleep(1)
+                driver.quit if driver
                 self.delete(id) if id
-            end # if id
-            # inform the exception
+            end
+            # Inform the exception
             ret[:status] = e.to_s
 #        # process interruption
 #        rescue SignalException, SystemExit, Interrupt => e 
@@ -259,7 +245,7 @@ class AdsPowerClient
 #                self.delete(id) if id
 #            end # if id
         end
-        # return
+        # Return
         ret
-    end # def html
-end # class AdsPowerClient
+    end
+end
