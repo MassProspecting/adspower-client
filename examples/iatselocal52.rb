@@ -19,7 +19,7 @@ l = BlackStack::LocalLogger.new('iatselocal52.log')
 # open the browser
 driver = client.driver(PROFILE_ID)
 
-('A'..'A').each do |c|
+('A'..'Z').each do |c|
     # 
     #c = 'A'
 
@@ -37,7 +37,7 @@ driver = client.driver(PROFILE_ID)
     i = 1 # 0 is the table header
     while i < rows.size
         l.logs "Row #{c.blue}.#{i.to_s.blue}... "
-        
+
         row = rows[i]
         td = row.find_element(css: 'td:first-child')
         div = td.find_element(css: 'div')
