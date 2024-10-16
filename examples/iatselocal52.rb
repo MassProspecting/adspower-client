@@ -35,9 +35,9 @@ driver = client.driver(PROFILE_ID)
     driver.get(url)
     rows = driver.find_elements(css: 'table.darkfont tr')
     i = 1 # 0 is the table header
-#    while i < rows.size
-while i < 50
-            l.logs "Row #{c.blue}.#{i.to_s.blue}... "
+    while i < rows.size
+        l.logs "Row #{c.blue}.#{i.to_s.blue}... "
+        
         row = rows[i]
         td = row.find_element(css: 'td:first-child')
         div = td.find_element(css: 'div')
@@ -100,14 +100,12 @@ while i < 50
         #end
 
         # Assign phone numbers based on presence
-        info[:phone] = phones[0] ? "'#{phones[0]}" : ''
-        info[:phone_2] = phones[1] ? "'#{phones[1]}" : ''
-        info[:phone_3] = phones[2] ? "'#{phones[2]}" : ''
+        info[:phone] = !phones[0].to_s.strip.empty? ? "#{phones[0]}" : ''
+        info[:phone_2] = !phones[1].to_s.strip.empty? ? "#{phones[1]}" : ''
+        info[:phone_3] = !phones[2].to_s.strip.empty? ? "#{phones[2]}" : ''
 
         # Clean up address
         info[:address].gsub!(/.\n/, '') if info[:address]
-
-#binding.pry if info[:phone_3] =~ /@/            
 
         # CSV
         # Write the extracted information into a CSV file

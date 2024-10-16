@@ -1,5 +1,6 @@
 /examples/*.log
 /examples/*.csv
+/examples/*.csv#
 /examples/*.html
 /examples/*.pem
 /examples/config.rb
