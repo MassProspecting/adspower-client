@@ -80,16 +80,34 @@ while i < 50
         phones[0] = nil if phones[0] == '-   -'
         phones[1] = nil if phones[1] == '-   -'
         phones[2] = nil if phones[2] == '-   -'
+        
+        # sometimes, the website shows the email into a phone field.
+        #if info[:email].to_s.empty?
+            if phones[0].to_s =~ /@/
+                info[:email] = phones[0]
+                phones[0] = ''
+            end
+
+            if phones[1].to_s =~ /@/
+                info[:email] = phones[1]
+                phones[1] = ''
+            end
+
+            if phones[2].to_s =~ /@/
+                info[:email] = phones[2]
+                phones[2] = ''
+            end
+        #end
 
         # Assign phone numbers based on presence
         info[:phone] = phones[0] ? "'#{phones[0]}" : ''
         info[:phone_2] = phones[1] ? "'#{phones[1]}" : ''
         info[:phone_3] = phones[2] ? "'#{phones[2]}" : ''
-        
+
         # Clean up address
         info[:address].gsub!(/.\n/, '') if info[:address]
 
-        binding.pry if info[:phone_3] =~ /@/            
+#binding.pry if info[:phone_3] =~ /@/            
 
         # CSV
         # Write the extracted information into a CSV file
