@@ -19,7 +19,7 @@ l = BlackStack::LocalLogger.new('iatselocal52.log')
 # open the browser
 driver = client.driver(PROFILE_ID)
 
-('B'..'Z').each do |c|
+('A'..'A').each do |c|
     # 
     #c = 'A'
 
@@ -36,7 +36,7 @@ driver = client.driver(PROFILE_ID)
     rows = driver.find_elements(css: 'table.darkfont tr')
     i = 1 # 0 is the table header
     while i < rows.size
-        l.logs "Row #{c}.#{i}... "
+        l.logs "Row #{c.blue}.#{i.to_s.blue}... "
         row = rows[i]
         td = row.find_element(css: 'td:first-child')
         div = td.find_element(css: 'div')
@@ -77,6 +77,7 @@ driver = client.driver(PROFILE_ID)
         info[:emergency_contact] = doc.at('td:contains("Emergency Contact:")')&.text&.split(':')&.last&.strip
         info[:emergency_phone] = doc.at('td:contains("Emergency Phone:")')&.text&.split(':')&.last&.strip
         
+        info[:address].gsub!(/.\n/, '')
         info[:phone] = "'"+info[:phone] unless info[:phone].to_s.empty?
         info[:phone_2] = "'"+info[:phone_2] unless info[:phone_2].to_s.empty?
         info[:phone_3] = "'"+info[:phone_3] unless info[:phone_3].to_s.empty?
