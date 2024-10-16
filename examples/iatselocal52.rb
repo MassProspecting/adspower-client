@@ -35,8 +35,9 @@ driver = client.driver(PROFILE_ID)
     driver.get(url)
     rows = driver.find_elements(css: 'table.darkfont tr')
     i = 1 # 0 is the table header
-    while i < rows.size
-        l.logs "Row #{c.blue}.#{i.to_s.blue}... "
+#    while i < rows.size
+while i < 50
+            l.logs "Row #{c.blue}.#{i.to_s.blue}... "
         row = rows[i]
         td = row.find_element(css: 'td:first-child')
         div = td.find_element(css: 'div')
@@ -70,17 +71,25 @@ driver = client.driver(PROFILE_ID)
         info[:last_name] = info[:name].split(', ').first if info[:name]
         info[:department] = doc.at('td:contains("Departmant:")')&.text&.split(':')&.last&.strip
         info[:address] = doc.at('td:contains("Address:")')&.text&.gsub(/Address:/, '')&.strip
-        info[:phone] = doc.at('td:contains("Phone:")')&.at('a')&.text&.strip.to_s
-        info[:phone_2] = doc.at('td:contains("Phone 2:")')&.at('a')&.text&.strip.to_s
-        info[:phone_3] = doc.at('td:contains("Phone 3:")')&.at('a')&.text&.strip.to_s
         info[:email] = doc.at('td:contains("Email:")')&.text&.split(':')&.last&.strip
         info[:emergency_contact] = doc.at('td:contains("Emergency Contact:")')&.text&.split(':')&.last&.strip
         info[:emergency_phone] = doc.at('td:contains("Emergency Phone:")')&.text&.split(':')&.last&.strip
         
-        info[:address].gsub!(/.\n/, '')
-        info[:phone] = "'"+info[:phone] unless info[:phone].to_s.empty?
-        info[:phone_2] = "'"+info[:phone_2] unless info[:phone_2].to_s.empty?
-        info[:phone_3] = "'"+info[:phone_3] unless info[:phone_3].to_s.empty?
+        # Extract phone numbers safely
+        phones = doc.css('td:contains("Phone") a').map { |a| a.text.strip }
+        phones[0] = nil if phones[0] == '-   -'
+        phones[1] = nil if phones[1] == '-   -'
+        phones[2] = nil if phones[2] == '-   -'
+
+        # Assign phone numbers based on presence
+        info[:phone] = phones[0] ? "'#{phones[0]}" : ''
+        info[:phone_2] = phones[1] ? "'#{phones[1]}" : ''
+        info[:phone_3] = phones[2] ? "'#{phones[2]}" : ''
+        
+        # Clean up address
+        info[:address].gsub!(/.\n/, '') if info[:address]
+
+        binding.pry if info[:phone_3] =~ /@/            
 
         # CSV
         # Write the extracted information into a CSV file

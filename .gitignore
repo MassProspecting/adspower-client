@@ -1,4 +1,5 @@
 /examples/*.log
+/examples/*.csv
 /examples/*.html
 /examples/*.pem
 /examples/config.rb
