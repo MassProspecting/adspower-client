@@ -11,6 +11,7 @@ Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](htt
 3. [Advanced](#3-advanced)
 4. [Headless](#4-headless)
 5. [Logging](#5-logging)
+6. [New `driver2` method](#6-new-driver2-method)
 
 ## 1. Installation
 
@@ -185,5 +186,17 @@ Feel free to change the location and name for the log:
 client = AdsPowerClient.new(
     key: '************************',
     server_log: '~/foo.log'
+)
+```
+
+## 6. New `driver2` method
+
+From version `1.0.14`, I added a new method `driver2` that is an improvement of legacy `driver` method.
+
+```ruby
+# open the browser
+driver = client.driver2(PROFILE_ID, 
+    headless: HEADLESS,
+    read_timeout: 200
 )
 ```

@@ -186,6 +186,34 @@ class AdsPowerClient
         driver
     end
 
+    # Attach to the existing browser session with Selenium WebDriver.
+    def driver2(id, headless: false, read_timeout: 180)
+        # Return the existing driver if it's still active.
+        old = @@drivers[id]
+        return old if old
+
+        # Otherwise, start the driver
+        ret = self.start(id, headless)
+
+        # Attach test execution to the existing browser
+        url = ret['data']['ws']['selenium']
+        opts = Selenium::WebDriver::Chrome::Options.new
+        opts.add_option("debuggerAddress", url)
+
+        # Set up the custom HTTP client with a longer timeout
+        client = Selenium::WebDriver::Remote::Http::Default.new
+        client.read_timeout = read_timeout # Set this to the desired timeout in seconds
+
+        # Connect to the existing browser
+        driver = Selenium::WebDriver.for(:chrome, options: opts, http_client: client)
+
+        # Save the driver
+        @@drivers[id] = driver
+
+        # Return the driver
+        driver
+    end
+
     # Create a new profile, start the browser, visit a page, grab the HTML, and clean up.
     def html(url)
         ret = {
