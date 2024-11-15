@@ -1,17 +1,19 @@
 # Avoid memory leaks.
-#
 # Reference: https://github.com/leandrosardi/adspower-client/issues/4
-# 
-
-require 'pry'
-require 'my-dropbox-api'
-
-#require 'adspower-client'
-require_relative '../lib/adspower-client'
-require_relative './config'
-
 #
-filename = "screenshot4.png"
+# Manage headless mode.
+# Reference: https://github.com/MassProspecting/adspower-client/issues/2
+#
+
+require 'adspower-client'
+#require_relative '../lib/adspower-client'
+
+# The following constants are defined in this file of secrets:
+# ADSPOWER_API_KEY
+# ADSPOWER_PORT
+# PROFILE_ID
+# HEADLESS
+require_relative './config'
 
 # create an adspower client
 client = AdsPowerClient.new(
@@ -26,25 +28,15 @@ client.server_start if client.online? == false
 # open the browser
 driver = client.driver(PROFILE_ID, HEADLESS)
 
-# show the number of `chromedriver` processes running
-puts `ps aux | grep "chromedriver"`
-
 # visit google.com
 driver.get('https://google.com')
 puts driver.title
+# => Google
 
 # visit to https://mercadolibre.com
 driver.get('https://mercadolibre.com')
 puts driver.title
-
-# maximize window
-driver.manage.window.maximize
-
-# take screenshot
-driver.save_screenshot("/tmp/#{filename}")
-
-# upload screenshot to dropbox
-BlackStack::DropBox.dropbox_upload_file("/tmp/#{filename}", "/#{filename}")
+# => Mercado Libre - Envíos Gratis en el día
 
 # close the browser
 driver.quit
