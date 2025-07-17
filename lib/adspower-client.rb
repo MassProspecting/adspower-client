@@ -140,44 +140,60 @@ class AdsPowerClient
         remaining: remaining }
     end # cloud_profile_quota
 
-    # Create a new browser profile with a custom name and proxy credentials
-    # Uses the “New Profile V2” endpoint to set name, group, and full user_proxy_config
-    def create(name:, proxy_config:, group_id: '0', remark: nil, platform: nil)
+    # Create a new desktop profile with custom name, proxy, and fingerprint settings
+    #
+    # @param name            [String] the profile’s display name
+    # @param proxy_config    [Hash]   keys: :ip, :port, :user, :password, :proxy_soft (default 'other'), :proxy_type (default 'http')
+    # @param group_id        [String] which AdsPower group to assign (default '0')
+    # @param browser_version [String] Chrome version to use (must match Chromedriver), defaults to adspower_default_browser_version
+    # @return String the new profile’s ID
+    def create(name:, proxy_config:, group_id: '0', browser_version: nil)
+        browser_version ||= adspower_default_browser_version
+
         with_lock do
-            url  = "#{adspower_listener}:#{port}/api/v2/browser-profile/create"
+            url = "#{adspower_listener}:#{port}/api/v2/browser-profile/create"
             body = {
-            'name'       => name,
-            'group_id'   => group_id
-            }
-            body['remark']   = remark   if remark
-            body['platform'] = platform if platform
-            body['user_proxy_config'] = {
-            'proxy_soft'     => proxy_config[:proxy_soft]     || 'other',
-            'proxy_type'     => proxy_config[:proxy_type]     || 'http',
-            'proxy_host'     => proxy_config[:ip],
-            'proxy_port'     => proxy_config[:port].to_s,
-            'proxy_user'     => proxy_config[:user],
-            'proxy_password' => proxy_config[:password]
-            }
-            body['fingerprint_config'] = {
-            'browser_kernel_config' => {
-                'version' => adspower_default_browser_version,
-                'type'    => 'chrome'
-            }
+                'name'            => name,
+                'group_id'        => group_id,
+                'user_proxy_config' => {
+                'proxy_soft'     => proxy_config[:proxy_soft]     || 'other',
+                'proxy_type'     => proxy_config[:proxy_type]     || 'http',
+                'proxy_host'     => proxy_config[:ip],
+                'proxy_port'     => proxy_config[:port].to_s,
+                'proxy_user'     => proxy_config[:user],
+                'proxy_password' => proxy_config[:password]
+                },
+                'fingerprint_config' => {
+                    # 1) Chrome kernel version → must match your Chromedriver
+                    'browser_kernel_config' => {
+                        'version' => browser_version,
+                        'type'    => 'chrome'
+                    },
+                    # 2) Auto‐detect timezone (and locale) from proxy IP
+                    'automatic_timezone' => '1',
+                    'timezone'           => '',
+                    'language'           => [],
+                    # 3) Force desktop UA (no mobile): empty random_ua & default UA settings
+                    'ua' => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "\
+"AppleWebKit/537.36 (KHTML, like Gecko) Chrome/#{browser_version}.0.0.0 Safari/537.36",
+                    'ua_category' => 'desktop',
+                    #'screen_resolution' => '1920*1080',
+                    'is_mobile' => false,
+                    # standard desktop fingerprints
+                    'webrtc'  => 'disabled',  # hide real IP via WebRTC
+                    'flash'   => 'allow',
+                    'fonts'   => [],          # default fonts
+                }
             }
 
-            # Perform the API call
             res = BlackStack::Netting.call_post(url, body)
             ret = JSON.parse(res.body)
-
-            # Raise if anything went wrong
             raise "Error creating profile: #{ret['msg']}" unless ret['code'] == 0
 
-            # Return the new profile’s ID
             ret['data']['profile_id']
         end
-    end
-
+    end # def create
+    
     # Delete a user profile via API call.
     def delete(id)
         with_lock do
