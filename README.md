@@ -61,6 +61,7 @@ client.create2(
         password:       '**********'
     },
     group_id:           '0'
+    browser_version:    '134'
 )
 # => "k11vcxmw"
 ```
