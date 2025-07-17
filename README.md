@@ -90,6 +90,35 @@ driver = client.driver('jc8y5g3')
 driver.get('https://google.com')
 ```
 
+## 10. Starting AdsPower Server
+
+```ruby
+client.server_start
+client.online? ? 'yes' : 'no'
+# => "yes"
+```
+
+## 11. Stopping AdsPower Server
+
+```ruby
+client.server_stop
+client.online? ? 'yes' : 'no'
+# => "no"
+```
+
+## 12. Setting AdsPower Server Port
+
+The server will listen the port `50325` by default. 
+
+You can set a custom port:
+
+```ruby
+client = AdsPowerClient.new(
+    key: YOUR_API_KEY,
+    port: 8082,
+)
+```
+
 
 ---------------------------
 ---------------------------
