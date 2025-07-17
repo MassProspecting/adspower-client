@@ -4,183 +4,169 @@
 
 Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](https://www.adspower.com/) and proxies.
 
-**Outline:**
-
-1. [Installation](#1-installation)
-2. [Scraping](#2-scraping)
-3. [Advanced](#3-advanced)
-4. [Headless](#4-headless)
-5. [Logging](#5-logging)
-6. [New `driver2` method](#6-new-driver2-method)
+* [1. Installation](#1-installation)
+* [2. Getting Started](#2-getting-started)
+* [3. Creating Profiles](#3-creating-profiles)
+* [4. Deleting Profile](#4-deleting-profile)
+* [5. Retrieving Number of Profiles](#5-retrieving-number-of-profiles)
+* [6. Starting Profile](#6-starting-profile)
+* [7. Stopping Profile](#7-stopping-profile)
+* [8. Checking if Profile is Running](#8-checking-if-profile-is-running)
+* [9. Operating Browsers](#9-operating-browsers)
+* [10. Starting AdsPower Server](#10-starting-adspower-server)
+* [11. Stopping AdsPower Server](#11-stopping-adspower-server)
+* [12. Setting AdsPower Server Port](#12-setting-adspower-server-port)
+* [13. Headless Mode](#13-headless-mode)
+* [14. Net‑Read Timeout](#14-net-read-timeout)
+* [15. Logging](#15-logging)
 
 ## 1. Installation
-
-First thing first, you need to install the environment.
-Then, you have to install the gem.
-Finally, you can write code for AdsPower automation.
-
-**Installing Environment:**
-
-```bash
-wget https://raw.githubusercontent.com/leandrosardi/environment/main/sh/install.ubuntu.20_04.sh -O - | bash
-```
-
-**Installing Gem:**
 
 ```bash
 gem install adspower-client
 ```
 
-**Writing Code:**
+## 2. Getting Started
+
+Follow the steps below to get the API-key:
+
+1. Open the AdsPower desktop app and sign in to your account. 
+
+2. In the sidebar, click on API.
+
+3. Click Generate API Key, then copy the displayed key for use with AdsPower’s Local API. 
 
 ```ruby
 client = AdsPowerClient.new(
-    key: '************************',
+    key: '******************'
 )
-```
 
-Remember to open and login to the AdsPower app, as is shown in the picture below.
-In the [chatper 4 (Headless)](#4-headless) you will see how to run AdsPower in headless mode.
-
-![Logging into AdsPower app](./images/adspower1.png)
-
-## 2. Scraping
-
-The `html` method perform the following operations in order to scrape any webpage stealthly:
-
-- create a new profile
-- start the browser
-- visit the page
-- grab the html
-- quit the browser from webdriver
-- stop the broser from adspower
-- delete the profile
-- return the html
-
-```ruby
-ret = client.html('http://foo.com')
-p ret[:profile_id]
-# => "jc8y0yt"
-p ret[:status]
-# => "success"
-p ret[:html]
-# => ...
-```
-
-## 3. Advanced
-
-Internal methods that you should handle to develop advanced bots.
-
-**Checking AdsPower Status**
-
-The `online?` method returns `true` if AdsPower API is available.
-
-```ruby
-p client.online?
+client.online?
 # => true
 ```
 
-**Creating Profile**
+Remember to keep opened the AdsPower app in your computer, and stay logged in.
+
+## 3. Creating Profiles
 
 ```ruby
-p client.create
-# => "jc8y0yt"
+client.create2(
+    name:               'Example Profile',
+    proxy_config: {
+        proxy_soft:     'other',
+        proxy_type:     'http',
+        ip:             '55.55.55.55',
+        port:           10001,
+        user:           '**********',
+        password:       '**********'
+    },
+    group_id:           '0'
+)
+# => "k11vcxmw"
 ```
 
-**Deleting Profile**
+## 4. Deleting Profile
 
 ```ruby
-client.delete('jc8y0yt')
+client.delete('k11vcxmw')
 ```
 
-**Starting Profile**
+## 5. Retrieving Number of Profiles
 
 ```ruby
-p client.start('jc8y5g3')
+client.profile_count
+# => 400011
+```
+
+## 6. Starting Profile
+
+```ruby
+client.start('jc8y5g3')
 # => {"code"=>0, "msg"=>"success", "data"=>{"ws"=>{"puppeteer"=>"ws://127.0.0.1:43703/devtools/browser/60e1d880-e4dc-4ae0-a2d3-56d123648299", "selenium"=>"127.0.0.1:43703"}, "debug_port"=>"43703", "webdriver"=>"/home/leandro/.config/adspower_global/cwd_global/chrome_116/chromedriver"}}
 ```
 
-**Stopping Profile**
+## 7. Stopping Profile
 
 ```ruby
 client.stop('jc8y5g3')
+# => {"code"=>0, "msg"=>"success"}
 ```
 
-**Checking Profile**
-
-The `check` method returns `true` if the profile has been started.
+## 8. Checking if Profile is Running
 
 ```ruby
 client.check('jc8y5g3')
 # => true
 ```
 
-**Operating Browser**
+## 9. Operating Browsers
 
 ```ruby
-id = 'jc8y5g3'
-url = 'https://google.com'
-driver = client.driver(id)
-driver.get(url)
+driver = client.driver('jc8y5g3')
+driver.get('https://google.com')
 ```
 
-## 4. Headless
+## 10. Starting AdsPower Server
 
-This chapter explains the operations for working with the AdsPower server and browser in headless mode.
-
-**Starting the AdsPower server**
-
-To start the AdsPower server, use the `server_start` method:
+If you want to run AdsPower in servers, you need a way to start the local API automatically.
 
 ```ruby
-client = AdsPowerClient.new(key: YOUR_API_KEY)
 client.server_start
+client.online? ? 'yes' : 'no'
+# => "yes"
 ```
+
+## 11. Stopping AdsPower Server
+
+```ruby
+client.server_stop
+client.online? ? 'yes' : 'no'
+# => "no"
+```
+
+## 12. Setting AdsPower Server Port
 
 The server will listen the port `50325` by default. 
+
 You can set a custom port:
 
 ```ruby
 client = AdsPowerClient.new(
-    key: YOUR_API_KEY,
+    key: '************************',
     port: 8082,
 )
 ```
 
-**Stopping the AdsPower server**
+## 13. Headless Mode
 
-To stop the AdsPower server, use the `server_stop` method:
+If you start the AdsPower server by calling `server_start`, browsers will run in headless mode always.
 
-```ruby
-client.server_stop
-```
-
-**Checking if the server is running**
-
-You can verify whether the server is running with the `online?` method:
+If you are running the AdsPower GUI (aka app) instead, you can choose to start browsers in headless or not.
 
 ```ruby
-puts client.online? ? "Server is running" : "Server is stopped"
+# open the browser
+driver = client.driver2('k11vhkyy', 
+    headless: true
+)
 ```
 
-**Starting a browser in headless mode**
-
-Pass `true` as the second parameter to the `driver` method to start a browser in headless mode:
+## 14. Net-Read Timeout
 
 ```ruby
-client = AdsPowerClient.new(key: YOUR_API_KEY)
-driver = client.driver(PROFILE_ID, true)
+# open the browser
+driver = client.driver2('k11vhkyy', 
+    read_timeout: 5000 # 5 seconds
+)
 ```
 
-## 5. Logging
+## 15. Logging
 
-The `server_start` method seen in [chatper 4 (Headless)](#4-headless) runs a bash line to start the AdsPower server.
-
+The `server_start` method runs a bash line to start the AdsPower server.
 Such a bash line redirects both `stdout` and `stderr` to `~/adspower-client.log`.
 
 Check such a logfile if you face any problem to start the AdsPower server.
 
-Feel free to change the location and name for the log:
+You can change the location and name for the log:
 
 ```ruby
 client = AdsPowerClient.new(
@@ -189,14 +175,3 @@ client = AdsPowerClient.new(
 )
 ```
 
-## 6. New `driver2` method
-
-From version `1.0.14`, I added a new method `driver2` that is an improvement of legacy `driver` method.
-
-```ruby
-# open the browser
-driver = client.driver2(PROFILE_ID, 
-    headless: HEADLESS,
-    read_timeout: 200
-)
-```

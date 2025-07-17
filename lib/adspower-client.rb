@@ -6,10 +6,12 @@ require 'selenium-webdriver'
 require 'watir'
 require 'fileutils'
 
-class AdsPowerClient    
+class AdsPowerClient  
+    CLOUD_API_BASE = 'https://api.adspower.com/v1'
+
     # reference: https://localapi-doc-en.adspower.com/
     # reference: https://localapi-doc-en.adspower.com/docs/Rdw7Iu
-    attr_accessor :key, :port, :server_log, :adspower_listener, :adspower_default_browser_version
+    attr_accessor :key, :port, :server_log, :adspower_listener, :adspower_default_browser_version, :cloud_token
 
     # control over the drivers created, in order to not create the same driver twice and not generate memory leaks.
     # reference: https://github.com/leandrosardi/adspower-client/issues/4
@@ -22,7 +24,12 @@ class AdsPowerClient
         self.port = h[:port] || '50325'
         self.server_log = h[:server_log] || '~/adspower-client.log'
         self.adspower_listener = h[:adspower_listener] || 'http://127.0.0.1'
+        
+        # DEPRECATED
         self.adspower_default_browser_version = h[:adspower_default_browser_version] || '116'
+
+        # PENDING
+        self.cloud_token = h[:cloud_token]
     end
 
     # Acquire the lock
@@ -89,6 +96,54 @@ class AdsPowerClient
         end
     end
 
+    # Count current profiles (optionally filtered by group)
+    def profile_count(group_id: nil)
+        count = 0
+        page  = 1
+
+        loop do
+        params = { page: page, limit: 100 }
+        params[:group_id] = group_id if group_id
+        url   = "#{adspower_listener}:#{port}/api/v2/browser-profile/list"
+        res   = BlackStack::Netting.call_post(url, params)
+        data  = JSON.parse(res.body)
+        raise "Error listing profiles: #{data['msg']}" unless data['code'] == 0
+
+        list = data['data']['list']
+        count += list.size
+        break if list.size < 100
+
+        page += 1
+        end
+
+        count
+    end
+
+    # Return a hash with:
+    #  • :limit     ⇒ total profile slots allowed (-1 = unlimited)
+    #  • :used      ⇒ number of profiles currently created
+    #  • :remaining ⇒ slots left (nil if unlimited)
+    # Fetch your real profile quota from the Cloud API
+    def cloud_profile_quota
+        uri = URI("#{CLOUD_API_BASE}/account/get_info")
+        req = Net::HTTP::Get.new(uri)
+        req['Authorization'] = "Bearer #{self.cloud_token}"
+
+        res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+            http.request(req)
+        end
+        data = JSON.parse(res.body)
+        raise "Cloud API error: #{data['msg']}" unless data['code'] == 0
+
+        allowed = data['data']['total_profiles_allowed'].to_i
+        used    = data['data']['profiles_used'].to_i
+        remaining = allowed < 0 ? nil : (allowed - used)
+
+        { limit:     allowed,
+        used:      used,
+        remaining: remaining }
+    end # cloud_profile_quota
+
     # Create a new user profile via API call and return the ID of the created user.
     def create
         with_lock do
@@ -106,8 +161,62 @@ class AdsPowerClient
             raise "Error: #{ret.to_s}" if ret['msg'].to_s.downcase != 'success'
             ret['data']['id']
         end
-    end
+    end # def create
 
+    # Create a new desktop profile with custom name, proxy, and fingerprint settings
+    #
+    # @param name            [String] the profile’s display name
+    # @param proxy_config    [Hash]   keys: :ip, :port, :user, :password, :proxy_soft (default 'other'), :proxy_type (default 'http')
+    # @param group_id        [String] which AdsPower group to assign (default '0')
+    # @param browser_version [String] Chrome version to use (must match Chromedriver), defaults to adspower_default_browser_version
+    # @return String the new profile’s ID
+    def create2(name:, proxy_config:, group_id: '0', browser_version: nil)
+        browser_version ||= adspower_default_browser_version
+
+        with_lock do
+            url = "#{adspower_listener}:#{port}/api/v2/browser-profile/create"
+            body = {
+                'name'            => name,
+                'group_id'        => group_id,
+                'user_proxy_config' => {
+                'proxy_soft'     => proxy_config[:proxy_soft]     || 'other',
+                'proxy_type'     => proxy_config[:proxy_type]     || 'http',
+                'proxy_host'     => proxy_config[:ip],
+                'proxy_port'     => proxy_config[:port].to_s,
+                'proxy_user'     => proxy_config[:user],
+                'proxy_password' => proxy_config[:password]
+                },
+                'fingerprint_config' => {
+                    # 1) Chrome kernel version → must match your Chromedriver
+                    'browser_kernel_config' => {
+                        'version' => browser_version,
+                        'type'    => 'chrome'
+                    },
+                    # 2) Auto‐detect timezone (and locale) from proxy IP
+                    'automatic_timezone' => '1',
+                    'timezone'           => '',
+                    'language'           => [],
+                    # 3) Force desktop UA (no mobile): empty random_ua & default UA settings
+                    'ua' => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "\
+"AppleWebKit/537.36 (KHTML, like Gecko) Chrome/#{browser_version}.0.0.0 Safari/537.36",
+                    'ua_category' => 'desktop',
+                    #'screen_resolution' => '1920*1080',
+                    'is_mobile' => false,
+                    # standard desktop fingerprints
+                    'webrtc'  => 'disabled',  # hide real IP via WebRTC
+                    'flash'   => 'allow',
+                    'fonts'   => [],          # default fonts
+                }
+            }
+
+            res = BlackStack::Netting.call_post(url, body)
+            ret = JSON.parse(res.body)
+            raise "Error creating profile: #{ret['msg']}" unless ret['code'] == 0
+
+            ret['data']['profile_id']
+        end
+    end # def create2
+    
     # Delete a user profile via API call.
     def delete(id)
         with_lock do
@@ -214,6 +323,8 @@ class AdsPowerClient
         driver
     end
 
+    # DEPRECATED - Use Zyte instead of this method.
+    #
     # Create a new profile, start the browser, visit a page, grab the HTML, and clean up.
     def html(url)
         ret = {
