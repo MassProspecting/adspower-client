@@ -4,6 +4,22 @@
 
 Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](https://www.adspower.com/) and proxies.
 
+* [1. Installation](#1-installation)
+* [2. Getting Started](#2-getting-started)
+* [3. Creating Profiles](#3-creating-profiles)
+* [4. Deleting Profile](#4-deleting-profile)
+* [5. Retrieving Number of Profiles](#5-retrieving-number-of-profiles)
+* [6. Starting Profile](#6-starting-profile)
+* [7. Stopping Profile](#7-stopping-profile)
+* [8. Checking if Profile is Running](#8-checking-if-profile-is-running)
+* [9. Operating Browsers](#9-operating-browsers)
+* [10. Starting AdsPower Server](#10-starting-adspower-server)
+* [11. Stopping AdsPower Server](#11-stopping-adspower-server)
+* [12. Setting AdsPower Server Port](#12-setting-adspower-server-port)
+* [13. Headless Mode](#13-headless-mode)
+* [14. Net‑Read Timeout](#14-net-read-timeout)
+* [15. Logging](#15-logging)
+
 ## 1. Installation
 
 ```bash
