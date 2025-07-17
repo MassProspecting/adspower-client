@@ -92,6 +92,8 @@ driver.get('https://google.com')
 
 ## 10. Starting AdsPower Server
 
+If you want to run AdsPower in servers, you need a way to start the local API automatically.
+
 ```ruby
 client.server_start
 client.online? ? 'yes' : 'no'
@@ -114,78 +116,41 @@ You can set a custom port:
 
 ```ruby
 client = AdsPowerClient.new(
-    key: YOUR_API_KEY,
+    key: '************************',
     port: 8082,
 )
 ```
 
+## 13. Headless Mode
 
----------------------------
----------------------------
----------------------------
----------------------------
----------------------------
----------------------------
+If you start the AdsPower server by calling `server_start`, browsers will run in headless mode always.
 
-
-
-## 4. Headless
-
-This chapter explains the operations for working with the AdsPower server and browser in headless mode.
-
-**Starting the AdsPower server**
-
-To start the AdsPower server, use the `server_start` method:
+If you are running the AdsPower GUI (aka app) instead, you can choose to start browsers in headless or not.
 
 ```ruby
-client = AdsPowerClient.new(key: YOUR_API_KEY)
-client.server_start
-```
-
-The server will listen the port `50325` by default. 
-You can set a custom port:
-
-```ruby
-client = AdsPowerClient.new(
-    key: YOUR_API_KEY,
-    port: 8082,
+# open the browser
+driver = client.driver2('k11vhkyy', 
+    headless: true
 )
 ```
 
-**Stopping the AdsPower server**
-
-To stop the AdsPower server, use the `server_stop` method:
+## 14. Net-Read Timeout
 
 ```ruby
-client.server_stop
+# open the browser
+driver = client.driver2('k11vhkyy', 
+    read_timeout: 5000 # 5 seconds
+)
 ```
 
-**Checking if the server is running**
+## 15. Logging
 
-You can verify whether the server is running with the `online?` method:
-
-```ruby
-puts client.online? ? "Server is running" : "Server is stopped"
-```
-
-**Starting a browser in headless mode**
-
-Pass `true` as the second parameter to the `driver` method to start a browser in headless mode:
-
-```ruby
-client = AdsPowerClient.new(key: YOUR_API_KEY)
-driver = client.driver(PROFILE_ID, true)
-```
-
-## 5. Logging
-
-The `server_start` method seen in [chatper 4 (Headless)](#4-headless) runs a bash line to start the AdsPower server.
-
+The `server_start` method runs a bash line to start the AdsPower server.
 Such a bash line redirects both `stdout` and `stderr` to `~/adspower-client.log`.
 
 Check such a logfile if you face any problem to start the AdsPower server.
 
-Feel free to change the location and name for the log:
+You can change the location and name for the log:
 
 ```ruby
 client = AdsPowerClient.new(
@@ -194,14 +159,3 @@ client = AdsPowerClient.new(
 )
 ```
 
-## 6. New `driver2` method
-
-From version `1.0.14`, I added a new method `driver2` that is an improvement of legacy `driver` method.
-
-```ruby
-# open the browser
-driver = client.driver2(PROFILE_ID, 
-    headless: HEADLESS,
-    read_timeout: 200
-)
-```
