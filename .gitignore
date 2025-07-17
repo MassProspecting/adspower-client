@@ -5,3 +5,4 @@
 /examples/*.pem
 /examples/config.rb
 .sandbox
+config.rb

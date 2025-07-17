@@ -4,125 +4,101 @@
 
 Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](https://www.adspower.com/) and proxies.
 
-**Outline:**
-
-1. [Installation](#1-installation)
-2. [Scraping](#2-scraping)
-3. [Advanced](#3-advanced)
-4. [Headless](#4-headless)
-5. [Logging](#5-logging)
-6. [New `driver2` method](#6-new-driver2-method)
-
 ## 1. Installation
-
-First thing first, you need to install the environment.
-Then, you have to install the gem.
-Finally, you can write code for AdsPower automation.
-
-**Installing Environment:**
-
-```bash
-wget https://raw.githubusercontent.com/leandrosardi/environment/main/sh/install.ubuntu.20_04.sh -O - | bash
-```
-
-**Installing Gem:**
 
 ```bash
 gem install adspower-client
 ```
 
-**Writing Code:**
+## 2. Getting Started
+
+Follow the steps below to get the API-key:
+
+1. Open the AdsPower desktop app and sign in to your account. 
+
+2. In the sidebar, click on API.
+
+3. Click Generate API Key, then copy the displayed key for use with AdsPower’s Local API. 
 
 ```ruby
 client = AdsPowerClient.new(
-    key: '************************',
+    key: '******************'
 )
-```
 
-Remember to open and login to the AdsPower app, as is shown in the picture below.
-In the [chatper 4 (Headless)](#4-headless) you will see how to run AdsPower in headless mode.
-
-![Logging into AdsPower app](./images/adspower1.png)
-
-## 2. Scraping
-
-The `html` method perform the following operations in order to scrape any webpage stealthly:
-
-- create a new profile
-- start the browser
-- visit the page
-- grab the html
-- quit the browser from webdriver
-- stop the broser from adspower
-- delete the profile
-- return the html
-
-```ruby
-ret = client.html('http://foo.com')
-p ret[:profile_id]
-# => "jc8y0yt"
-p ret[:status]
-# => "success"
-p ret[:html]
-# => ...
-```
-
-## 3. Advanced
-
-Internal methods that you should handle to develop advanced bots.
-
-**Checking AdsPower Status**
-
-The `online?` method returns `true` if AdsPower API is available.
-
-```ruby
-p client.online?
+client.online?
 # => true
 ```
 
-**Creating Profile**
+Remember to keep opened the AdsPower app in your computer, and stay logged in.
+
+## 3. Creating Profiles
 
 ```ruby
-p client.create
-# => "jc8y0yt"
+client.create(
+    name:               'Example Profile',
+    proxy_config: {
+        proxy_soft:     'other',
+        proxy_type:     'http',
+        ip:             '55.55.55.55',
+        port:           10001,
+        user:           '**********',
+        password:       '**********'
+    },
+    group_id:           '0'
+)
+# => "k11vcxmw"
 ```
 
-**Deleting Profile**
+## 4. Deleting Profile
 
 ```ruby
-client.delete('jc8y0yt')
+client.delete('k11vcxmw')
 ```
 
-**Starting Profile**
+## 5. Retrieving Number of Profiles
 
 ```ruby
-p client.start('jc8y5g3')
+client.profile_count
+# => 400011
+```
+
+## 6. Starting Profile
+
+```ruby
+client.start('jc8y5g3')
 # => {"code"=>0, "msg"=>"success", "data"=>{"ws"=>{"puppeteer"=>"ws://127.0.0.1:43703/devtools/browser/60e1d880-e4dc-4ae0-a2d3-56d123648299", "selenium"=>"127.0.0.1:43703"}, "debug_port"=>"43703", "webdriver"=>"/home/leandro/.config/adspower_global/cwd_global/chrome_116/chromedriver"}}
 ```
 
-**Stopping Profile**
+## 7. Stopping Profile
 
 ```ruby
 client.stop('jc8y5g3')
+# => {"code"=>0, "msg"=>"success"}
 ```
 
-**Checking Profile**
-
-The `check` method returns `true` if the profile has been started.
+## 8. Checking if Profile is Running
 
 ```ruby
 client.check('jc8y5g3')
 # => true
 ```
 
-**Operating Browser**
+## 9. Operating Browsers
 
 ```ruby
-id = 'jc8y5g3'
-url = 'https://google.com'
-driver = client.driver(id)
-driver.get(url)
+driver = client.driver('jc8y5g3')
+driver.get('https://google.com')
 ```
+
+
+---------------------------
+---------------------------
+---------------------------
+---------------------------
+---------------------------
+---------------------------
+
+
 
 ## 4. Headless
 
