@@ -50,7 +50,7 @@ Remember to keep opened the AdsPower app in your computer, and stay logged in.
 ## 3. Creating Profiles
 
 ```ruby
-client.create(
+client.create2(
     name:               'Example Profile',
     proxy_config: {
         proxy_soft:     'other',

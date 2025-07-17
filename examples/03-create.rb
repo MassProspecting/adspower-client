@@ -10,7 +10,7 @@ puts client.online? ? 'yes' : 'no'
 # => Is AdsPower running?... yes
 
 print 'Creating profile... '
-profile_id = client.create(
+profile_id = client.create2(
     name:               'Example Profile',
     proxy_config: {
         proxy_soft:     'other',

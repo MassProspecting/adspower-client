@@ -24,7 +24,11 @@ class AdsPowerClient
         self.port = h[:port] || '50325'
         self.server_log = h[:server_log] || '~/adspower-client.log'
         self.adspower_listener = h[:adspower_listener] || 'http://127.0.0.1'
+        
+        # DEPRECATED
         self.adspower_default_browser_version = h[:adspower_default_browser_version] || '116'
+
+        # PENDING
         self.cloud_token = h[:cloud_token]
     end
 
@@ -140,6 +144,25 @@ class AdsPowerClient
         remaining: remaining }
     end # cloud_profile_quota
 
+    # Create a new user profile via API call and return the ID of the created user.
+    def create
+        with_lock do
+            url = "#{self.adspower_listener}:#{port}/api/v1/user/create"
+            body = {
+                'group_id' => '0',
+                'proxyid' => '1',
+                'fingerprint_config' => {
+                    'browser_kernel_config' => {"version": self.adspower_default_browser_version, "type": "chrome"}
+                }
+            }
+            # API call
+            res = BlackStack::Netting.call_post(url, body)
+            ret = JSON.parse(res.body)
+            raise "Error: #{ret.to_s}" if ret['msg'].to_s.downcase != 'success'
+            ret['data']['id']
+        end
+    end # def create
+
     # Create a new desktop profile with custom name, proxy, and fingerprint settings
     #
     # @param name            [String] the profile’s display name
@@ -147,7 +170,7 @@ class AdsPowerClient
     # @param group_id        [String] which AdsPower group to assign (default '0')
     # @param browser_version [String] Chrome version to use (must match Chromedriver), defaults to adspower_default_browser_version
     # @return String the new profile’s ID
-    def create(name:, proxy_config:, group_id: '0', browser_version: nil)
+    def create2(name:, proxy_config:, group_id: '0', browser_version: nil)
         browser_version ||= adspower_default_browser_version
 
         with_lock do
@@ -192,7 +215,7 @@ class AdsPowerClient
 
             ret['data']['profile_id']
         end
-    end # def create
+    end # def create2
     
     # Delete a user profile via API call.
     def delete(id)
@@ -300,6 +323,8 @@ class AdsPowerClient
         driver
     end
 
+    # DEPRECATED - Use Zyte instead of this method.
+    #
     # Create a new profile, start the browser, visit a page, grab the HTML, and clean up.
     def html(url)
         ret = {
