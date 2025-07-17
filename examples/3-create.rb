@@ -15,10 +15,10 @@ profile_id = client.create(
     proxy_config: {
         proxy_soft:     'other',
         proxy_type:     'http',
-        ip:             '207.228.20.71',
+        ip:             '55.55.55.55',
         port:           49656,
-        user:           'RnjcnnEKQEXplKn',
-        password:       'ciQKegU75q0aXw7'
+        user:           '***************',
+        password:       '***************'
     },
     group_id:           '0',
     browser_version:    '131'
