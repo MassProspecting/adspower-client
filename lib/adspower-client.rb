@@ -395,18 +395,6 @@ class AdsPowerClient
         # 2) attach with DevTools (no more excludeSwitches or caps!)
         opts = Selenium::WebDriver::Chrome::Options.new
         opts.debugger_address = ws
-=begin        
-        opts.add_argument('--enable-features=DnsOverHttps')
-        opts.add_argument('--dns-over-https-mode=secure')
-        opts.add_argument('--dns-over-https-templates=https://cloudflare-dns.com/dns-query')
-        opts.add_argument('--disable-ipv6')
-        opts.add_argument('--host-resolver-rules=MAP * 0.0.0.0,EXCLUDE localhost,EXCLUDE cloudflare-dns.com')
-        opts.add_argument('--disable-blink-features=AutomationControlled')
-=end
-#proxy_host = '207.228.20.71'
-#proxy_port = 49656
-#        opts.add_argument("--proxy-server=socks5://#{proxy_host}:#{proxy_port}")
-
         opts.add_argument('--headless') if headless
       
         http = Selenium::WebDriver::Remote::Http::Default.new
