@@ -1,6 +1,7 @@
 require_relative '../../config.rb'
 require_relative '../../lib/adspower-client.rb'
 require 'pry'
+require 'colorize'
 
 print 'Is AdsPower running?... '
 client = AdsPowerClient.new(
@@ -9,12 +10,13 @@ client = AdsPowerClient.new(
 puts client.online? ? 'yes' : 'no'
 # => Is AdsPower running?... yes
 
-print 'Creating profile... '
+timestamp = Time.now.strftime('%Y%m%d-%H%M%S')
+print "Creating profile #{timestamp.blue}... "
 profile_id = client.create2(
-    name:               'Synthetic - 01',
+    name:               "Synthetic - #{timestamp}",
     proxy_config: {
         proxy_soft:     'other',
-        proxy_type:     'http',
+        proxy_type:     'socks5',
         ip:             PROXY[:ip],
         port:           PROXY[:port],
         user:           PROXY[:username],
@@ -23,5 +25,10 @@ profile_id = client.create2(
     group_id:           '0',
     browser_version:    '131'
 )
-puts "done! Profile ID: #{profile_id}"
+puts "#{'done!'.green} Profile ID: #{profile_id.blue}"
 # => Creating profile... done! Profile ID: k11vcxmw
+=begin
+print 'Starting profile... '
+ret = client.start(profile_id)
+puts 'done!'.green
+=end

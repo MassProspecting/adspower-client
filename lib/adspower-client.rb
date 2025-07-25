@@ -202,6 +202,7 @@ class AdsPowerClient
         # 1) Hacemos GeoIP sobre la IP del proxy
         geo = geolocate(proxy_config[:ip])
         lang = COUNTRY_LANG[geo[:country_code]] || "en-US"
+        screen_res = "1920_1080"
 
         with_lock do
             url = "#{adspower_listener}:#{port}/api/v2/browser-profile/create"
@@ -210,33 +211,49 @@ class AdsPowerClient
                 'group_id'        => group_id,
                 'user_proxy_config' => {
                     'proxy_soft'     => proxy_config[:proxy_soft]     || 'other',
-                    'proxy_type'     => proxy_config[:proxy_type]     || 'http',
+                    'proxy_type'     => proxy_config[:proxy_type]     || 'socks5',
                     'proxy_host'     => proxy_config[:ip],
                     'proxy_port'     => proxy_config[:port].to_s,
                     'proxy_user'     => proxy_config[:user],
                     'proxy_password' => proxy_config[:password]
                 },
-                'fingerprint_config' => {
-                    # Desactivamos auto-timezone de AdsPower
-                    "automatic_timezone" => "0",
-                    # Forzamos la zona horaria del proxy
-                    "timezone"           => geo[:time_zone],
-                    # Idioma/locale coherente con país
-                    "language"           => [ lang ],
-                    # Coordenadas geográficas (si AdsPower las soporta)
-                    "latitude"           => geo[:latitude].to_s,
-                    "longitude"          => geo[:longitude].to_s,
-                    # UA forzado a escritorio Windows/Mac/Linux según país
-                    "ua_category"        => 'desktop',
-                    "ua" => "Mozilla/5.0 (X11; Linux x86_64) "\
-                            "AppleWebKit/537.36 (KHTML, like Gecko) "\
-                            "Chrome/#{browser_version}.0.0.0 Safari/537.36",
-                    # Hardware y plugins mínimos estándar
-                    "is_mobile"  => false,
-                    "webrtc"     => 'disabled',
-                    "flash"      => 'allow',
-                    "fonts"      => [],      # Dejar fonts por defecto
-                    "screen_resolution" => '1920*1080'  # o puedes rotar por país
+                "fingerprint_config" => {
+                    # ─── 1) Kernel & versión ───────────────────────────
+                        "browser_kernel_config" => {
+                            "version" => browser_version,   # aquí usamos el parámetro
+                            "type"    => "chrome"
+                        },
+
+                        # ─── 2) Timezone & locale ──────────────────────────
+                        "automatic_timezone" => "0",
+                        "timezone"           => geo[:time_zone],
+                        "language"           => [ lang ],
+
+                        # ─── 3) User-Agent coherente ───────────────────────
+                        "ua_category" => "desktop",
+                        "ua"          => "Mozilla/5.0 (X11; Linux x86_64) "\
+                                        "AppleWebKit/537.36 (KHTML, like Gecko) "\
+                                        "Chrome/#{browser_version}.0.0.0 Safari/537.36",
+                        "is_mobile"   => false,
+
+                        # ─── 4) Pantalla y plataforma ──────────────────────
+                        "screen_resolution" => screen_res,        # "1920_1080"
+                        "platform"          => "Linux x86_64",
+
+                        # ─── 5) Canvas & WebGL custom ─────────────────────
+                        "canvas"      => "1",
+                        "webgl_image" => "1",
+                        "webgl"       => "0",    # 0=deshabilitado, 2=modo custom, 3=modo random-match
+                        "webgl_config" => {
+                            "unmasked_vendor"   => "Intel Inc.",
+                            "unmasked_renderer" => "ANGLE (Intel, Mesa Intel(R) Xe Graphics (TGL GT2), OpenGL 4.6)",
+                            "webgpu"            => { "webgpu_switch" => "1" }
+                        },
+
+                        # ─── 6) Resto de ajustes ───────────────────────────
+                        "webrtc"   => "disabled",   # WebRTC sí admite “disabled”
+                        "flash"    => "block",      # Flash únicamente “allow” o “block”
+                        "fonts"    => []            # usar fonts por defecto
                 }
             }
 
@@ -373,6 +390,21 @@ class AdsPowerClient
             });
             JS
         )
+=begin
+        driver.execute_cdp(
+            'Page.addScriptToEvaluateOnNewDocument',
+            source: <<~JS
+              // ── DESACTIVAR WebGL ───────────────────────────────
+              const origGetContext = HTMLCanvasElement.prototype.getContext;
+              HTMLCanvasElement.prototype.getContext = function(type, ...args) {
+                if (type === 'webgl' || type === 'webgl2') {
+                  return null;  // WebGL queda completamente deshabilitado
+                }
+                return origGetContext.apply(this, [type, ...args]);
+              };
+            JS
+        )
+=end          
 =begin
         # ------------- AQUI VA LA INYECCIÓN MÁGICA -------------
         driver.execute_cdp(
