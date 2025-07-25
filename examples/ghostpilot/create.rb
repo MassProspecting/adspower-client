@@ -23,12 +23,18 @@ profile_id = client.create2(
         password:       PROXY[:password]
     },
     group_id:           '0',
-    browser_version:    '131'
+    browser_version:    '131' # Make sure your AdsPower profile’s browser_version matches 
+                              # the actual Chrome Browser and ChromeDriver on disk.
 )
 puts "#{'done!'.green} Profile ID: #{profile_id.blue}"
 # => Creating profile... done! Profile ID: k11vcxmw
-=begin
+
 print 'Starting profile... '
-ret = client.start(profile_id)
+br = client.driver2(profile_id)
 puts 'done!'.green
-=end
+
+print 'Visiting BrowserScan... '
+br.get('https://www.browserscan.net/')
+puts 'done!'.green
+
+binding.pry

@@ -176,3 +176,9 @@ client = AdsPowerClient.new(
 )
 ```
 
+## Downloading ChromeDriver
+
+Make sure your AdsPower profile’s browser_version matches the actual **Chrome Browser** and **ChromeDriver** on disk.
+
+You can search for versions and download links in [this JSON access point](https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json).
+

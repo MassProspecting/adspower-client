@@ -215,45 +215,71 @@ class AdsPowerClient
                     'proxy_host'     => proxy_config[:ip],
                     'proxy_port'     => proxy_config[:port].to_s,
                     'proxy_user'     => proxy_config[:user],
-                    'proxy_password' => proxy_config[:password]
+                    'proxy_password' => proxy_config[:password],
+
+                    # ─── FORCE ALL DNS THROUGH PROXY ─────────────────
+                    # Avoid DNS-Leak
+                    "proxy_dns":        1,                           # 1 = yes, 0 = no
+                    "dns_servers":     ["8.8.8.8","8.8.4.4"]         # optional: your choice of DNS
                 },
                 "fingerprint_config" => {
+
+                    # ─── 0) DNS Leak Prevention ───────────────────────────
+                    # Even with “proxy_dns” forced on, a few ISPs will still 
+                    # silently intercept every UDP:53 out of your AdsPower VPS 
+                    # and shove it into their own resolver farm (the classic 
+                    # “transparent DNS proxy” attack that BrowserScan is warning you about). 
+                    #
+                    # Because you refuse to hot-patch your Chrome via extra args or CDP, 
+                    # the only way to survive an ISP-level hijack is to push all name lookups 
+                    # into an encrypted channel that the ISP simply can’t touch: DNS-over-HTTPS (DoH).
+                    #
+                    # Here’s the minimal change you need to bake into your AdsPower profile at 
+                    # creation time so that every DNS query happens inside Chrome’s DoH stack:
+                    # 
+                    "extra_launch_flags" => [
+                        "--enable-features=DnsOverHttps",
+                        "--dns-over-https-mode=secure",
+                        "--dns-over-https-templates=https://cloudflare-dns.com/dns-query",
+                        "--disable-ipv6"
+                    ],
+
                     # ─── 1) Kernel & versión ───────────────────────────
-                        "browser_kernel_config" => {
-                            "version" => browser_version,   # aquí usamos el parámetro
-                            "type"    => "chrome"
-                        },
+                    "browser_kernel_config" => {
+                        "version" => browser_version,   # aquí usamos el parámetro
+                        "type"    => "chrome"
+                    },
 
-                        # ─── 2) Timezone & locale ──────────────────────────
-                        "automatic_timezone" => "0",
-                        "timezone"           => geo[:time_zone],
-                        "language"           => [ lang ],
+                    # ─── 2) Timezone & locale ──────────────────────────
+                    "automatic_timezone" => "0",
+                    "timezone"           => geo[:time_zone],
+                    "language"           => [ lang ],
 
-                        # ─── 3) User-Agent coherente ───────────────────────
-                        "ua_category" => "desktop",
-                        "ua"          => "Mozilla/5.0 (X11; Linux x86_64) "\
-                                        "AppleWebKit/537.36 (KHTML, like Gecko) "\
-                                        "Chrome/#{browser_version}.0.0.0 Safari/537.36",
-                        "is_mobile"   => false,
+                    # ─── 3) User-Agent coherente ───────────────────────
+                    "ua_category" => "desktop",
+                    "ua"          => "Mozilla/5.0 (X11; Linux x86_64) "\
+                                    "AppleWebKit/537.36 (KHTML, like Gecko) "\
+                                    "Chrome/#{browser_version}.0.0.0 Safari/537.36",
+                    "is_mobile"   => false,
 
-                        # ─── 4) Pantalla y plataforma ──────────────────────
-                        "screen_resolution" => screen_res,        # "1920_1080"
-                        "platform"          => "Linux x86_64",
+                    # ─── 4) Pantalla y plataforma ──────────────────────
+                    "screen_resolution" => screen_res,        # "1920_1080"
+                    "platform"          => "Linux x86_64",
 
-                        # ─── 5) Canvas & WebGL custom ─────────────────────
-                        "canvas"      => "1",
-                        "webgl_image" => "1",
-                        "webgl"       => "0",    # 0=deshabilitado, 2=modo custom, 3=modo random-match
-                        "webgl_config" => {
-                            "unmasked_vendor"   => "Intel Inc.",
-                            "unmasked_renderer" => "ANGLE (Intel, Mesa Intel(R) Xe Graphics (TGL GT2), OpenGL 4.6)",
-                            "webgpu"            => { "webgpu_switch" => "1" }
-                        },
+                    # ─── 5) Canvas & WebGL custom ─────────────────────
+                    "canvas"        => "1",
+                    "webgl_image"   => "1",
+                    "webgl"         => "0",    # 0=deshabilitado, 2=modo custom, 3=modo random-match
+                    "webgl_config"  => {
+                        "unmasked_vendor"   => "Intel Inc.",
+                        "unmasked_renderer" => "ANGLE (Intel, Mesa Intel(R) Xe Graphics (TGL GT2), OpenGL 4.6)",
+                        "webgpu"            => { "webgpu_switch" => "1" }
+                    },
 
-                        # ─── 6) Resto de ajustes ───────────────────────────
-                        "webrtc"   => "disabled",   # WebRTC sí admite “disabled”
-                        "flash"    => "block",      # Flash únicamente “allow” o “block”
-                        "fonts"    => []            # usar fonts por defecto
+                    # ─── 6) Resto de ajustes ───────────────────────────
+                    "webrtc"   => "disabled",   # WebRTC sí admite “disabled”
+                    "flash"    => "block",      # Flash únicamente “allow” o “block”
+                    "fonts"    => []            # usar fonts por defecto
                 }
             }
 
@@ -356,19 +382,7 @@ class AdsPowerClient
         url = ret['data']['ws']['selenium']
         opts = Selenium::WebDriver::Chrome::Options.new
         opts.add_option("debuggerAddress", url)
-
-        # elimina el switch “enable-automation”
-        opts.add_option(
-            "excludeSwitches", ['enable-automation']
-        )
-        # desactiva la extensión de automatización
-        opts.add_option(
-            "useAutomationExtension", false
-        )
-        # quita la marca de “Blink Automation”
-        opts.add_argument(
-            "--disable-blink-features=AutomationControlled"
-        )
+        
         # si quieres headless
         opts.add_argument("--headless") if headless
   
@@ -377,99 +391,79 @@ class AdsPowerClient
         client.read_timeout = read_timeout # Set this to the desired timeout in seconds
 
         # Connect to the existing browser
-        driver = Selenium::WebDriver.for(:chrome, options: opts, http_client: client)
-
-        # 4) Inyecta un script que redefina navigator.webdriver **antes** de que la página cargue
-        driver.execute_cdp(
-            'Page.addScriptToEvaluateOnNewDocument',
-            source: <<~JS
-            // sobreescribe por completo la propiedad webdriver
-            Object.defineProperty(navigator, 'webdriver', {
-                get: () => undefined,
-                configurable: true
-            });
-            JS
+        driver = Selenium::WebDriver.for(
+            :chrome, 
+            options: opts, 
+            http_client: client
         )
+
 =begin
-        driver.execute_cdp(
-            'Page.addScriptToEvaluateOnNewDocument',
-            source: <<~JS
-              // ── DESACTIVAR WebGL ───────────────────────────────
-              const origGetContext = HTMLCanvasElement.prototype.getContext;
-              HTMLCanvasElement.prototype.getContext = function(type, ...args) {
-                if (type === 'webgl' || type === 'webgl2') {
-                  return null;  // WebGL queda completamente deshabilitado
-                }
-                return origGetContext.apply(this, [type, ...args]);
-              };
-            JS
-        )
-=end          
-=begin
-        # ------------- AQUI VA LA INYECCIÓN MÁGICA -------------
-        driver.execute_cdp(
-            'Page.addScriptToEvaluateOnNewDocument',
-            source: <<~JS
-            // 1) navigator.webdriver
-            Object.defineProperty(navigator, 'webdriver', {
-                get: () => undefined,
-                configurable: true
-            });
+# 1) nuke navigator.webdriver
+driver.execute_cdp(
+    'Page.addScriptToEvaluateOnNewDocument',
+    source: <<~JS
+      Object.defineProperty(navigator, 'webdriver', {
+        get: () => undefined,
+        configurable: true
+      });
+    JS
+  )
 
-            // 2) User-Agent versión alineada a Chrome 136
-            const ua = "Mozilla/5.0 (X11; Linux x86_64) "\
-        "(KHTML, like Gecko) Chrome/136.0.7103.59 Safari/537.36";
-            Object.defineProperty(navigator, 'userAgent', { get: () => ua });
-            Object.defineProperty(navigator, 'appVersion',{ get: () => ua });
+  # 2) fake a real plugins array + mimeTypes
+  driver.execute_cdp(
+    'Page.addScriptToEvaluateOnNewDocument',
+    source: <<~JS
+      const fakePlugin = {
+        name: 'Chrome PDF Plugin',
+        filename: 'internal-pdf-viewer',
+        description: 'Portable Document Format'
+      };
+      Object.defineProperty(navigator, 'plugins', {
+        get: () => [ fakePlugin ],
+        configurable: true
+      });
+      const fakeMime = { type: 'application/pdf', suffixes: 'pdf', description: '' };
+      Object.defineProperty(navigator, 'mimeTypes', {
+        get: () => [ fakeMime ],
+        configurable: true
+      });
+    JS
+  )
 
-            // 3) platform, oscpu
-            Object.defineProperty(navigator, 'platform', { get: () => 'Linux x86_64' });
-            Object.defineProperty(navigator, 'oscpu',    { get: () => 'Linux x86_64' });
+  # 3) spoof languages
+  driver.execute_cdp(
+    'Page.addScriptToEvaluateOnNewDocument',
+    source: <<~JS
+      Object.defineProperty(navigator, 'language',  { get: () => 'en-US' });
+      Object.defineProperty(navigator, 'languages', { get: () => ['en-US','en'] });
+    JS
+  )
 
-            // 4) languages
-            Object.defineProperty(navigator, 'language',  { get: () => 'en-US' });
-            Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en'] });
+  # 4) stub out window.chrome so “if (window.chrome && window.chrome.runtime)” passes
+  driver.execute_cdp(
+    'Page.addScriptToEvaluateOnNewDocument',
+    source: <<~JS
+      window.chrome = { runtime: {} };
+    JS
+  )
 
-            // 5) Webdriver vendor / renderer leaks (WebGL & AudioContext)
-            const getParameter = WebGLRenderingContext.prototype.getParameter;
-            WebGLRenderingContext.prototype.getParameter = function(parameter) {
-                // por ejemplo, parchea los vendor strings:
-                if (parameter === 37445) return 'Intel Inc.';    // VENDOR
-                if (parameter === 37446) return 'Intel Iris';    // RENDERER
-                return getParameter(parameter);
-            };
+  # 5) Permissions API patch (some sites check for notifications permission)
+  driver.execute_cdp(
+    'Page.addScriptToEvaluateOnNewDocument',
+    source: <<~JS
+      const origQuery = navigator.permissions.query;
+      navigator.permissions.query = (params) =>
+        params.name === 'notifications'
+          ? Promise.resolve({ state: Notification.permission })
+          : origQuery(params);
+    JS
+  )
 
-            const AudioContext = window.AudioContext;
-            window.AudioContext = function() {
-                const ctx = new AudioContext();
-                // parchea un pequeño ruido en la fingerprint:
-                const orig = ctx.createAnalyser;
-                ctx.createAnalyser = function() {
-                const analyser = orig.call(this);
-                analyser.getFloatFrequencyData = function(arr) {
-                    // inyecta micro-ruido:
-                    for (let i = 0; i < arr.length; i++) {
-                    arr[i] += (Math.random() - 0.5) * 1e-5;
-                    }
-                    return arr;
-                };
-                return analyser;
-                };
-                return ctx;
-            };
-
-            // 6) Emulación de timezone e idioma en CDP
-            JS
-        )
-
-        # Finalmente, fuerza el timezone a America/New_York
-        driver.execute_cdp('Emulation.setTimezoneOverride', timezoneId: 'America/New_York')
-
-        # Si quieres, ajusta aquí también viewport/resolución, por ejemplo:
-        driver.execute_cdp('Emulation.setDeviceMetricsOverride', {
-            width: 1920, height: 1080, deviceScaleFactor: 1,
-            mobile: false
-        })
+  # 6) finally, set the timezone/language/devices like you already do
+  driver.execute_cdp('Emulation.setTimezoneOverride', timezoneId: 'America/New_York')
+  driver.execute_cdp('Emulation.setDeviceMetricsOverride', 
+    width: 1920, height: 1080, deviceScaleFactor: 1, mobile: false
+  )
 =end
         # Save the driver
         @@drivers[id] = driver
