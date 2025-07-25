@@ -309,12 +309,39 @@ class AdsPowerClient
         opts = Selenium::WebDriver::Chrome::Options.new
         opts.add_option("debuggerAddress", url)
 
+        # elimina el switch “enable-automation”
+        opts.add_option(
+            "excludeSwitches", ['enable-automation']
+        )
+        # desactiva la extensión de automatización
+        opts.add_option(
+            "useAutomationExtension", false
+        )
+        # quita la marca de “Blink Automation”
+        opts.add_argument(
+            "--disable-blink-features=AutomationControlled"
+        )
+        # si quieres headless
+        opts.add_argument("--headless") if headless
+  
         # Set up the custom HTTP client with a longer timeout
         client = Selenium::WebDriver::Remote::Http::Default.new
         client.read_timeout = read_timeout # Set this to the desired timeout in seconds
 
         # Connect to the existing browser
         driver = Selenium::WebDriver.for(:chrome, options: opts, http_client: client)
+
+        # 4) Inyecta un script que redefina navigator.webdriver **antes** de que la página cargue
+        driver.execute_cdp(
+            'Page.addScriptToEvaluateOnNewDocument',
+            source: <<~JS
+            // sobreescribe por completo la propiedad webdriver
+            Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined,
+                configurable: true
+            });
+            JS
+        )
 
         # Save the driver
         @@drivers[id] = driver

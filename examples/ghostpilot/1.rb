@@ -1,5 +1,5 @@
-require_relative '../config.rb'
-require_relative '../lib/adspower-client.rb'
+require_relative '../../config.rb'
+require_relative '../../lib/adspower-client.rb'
 require 'pry'
 
 print 'Is AdsPower running?... '
