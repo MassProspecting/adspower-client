@@ -402,20 +402,20 @@ class AdsPowerClient
       
         driver = Selenium::WebDriver.for(:chrome, options: opts, http_client: http)
 
-driver.execute_cdp(
-  'Page.addScriptToEvaluateOnNewDocument',
-  source: <<~JS
-    // 1) remove any leftover cdc_… / webdriver hooks
-    for (const k of Object.getOwnPropertyNames(window)) {
-      if (k.startsWith('cdc_') || k.includes('webdriver')) {
-        try { delete window[k]; } catch(e){}
-      }
-    }
+        driver.execute_cdp(
+            'Page.addScriptToEvaluateOnNewDocument',
+            source: <<~JS
+                // 1) remove any leftover cdc_… / webdriver hooks
+                for (const k of Object.getOwnPropertyNames(window)) {
+                if (k.startsWith('cdc_') || k.includes('webdriver')) {
+                    try { delete window[k]; } catch(e){}
+                }
+                }
 
-    // 2) stub out window.chrome so Chrome-based detection thinks this is “normal” Chrome
-    window.chrome = { runtime: {} };
-  JS
-)
+                // 2) stub out window.chrome so Chrome-based detection thinks this is “normal” Chrome
+                window.chrome = { runtime: {} };
+            JS
+        )
 
         @@drivers[id] = driver
         driver

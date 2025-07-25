@@ -36,4 +36,5 @@ puts 'done!'.green
 print 'Visiting BrowserScan... '
 br.get('https://www.browserscan.net/')
 #br.get('https://www.browserscan.net/bot-detection')
+#br.get('https://www.browserscan.net/dns-leak')
 puts 'done!'.green
