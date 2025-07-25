@@ -5,9 +5,18 @@ require 'blackstack-core'
 require 'selenium-webdriver'
 require 'watir'
 require 'fileutils'
+require 'countries'
 
 class AdsPowerClient  
     CLOUD_API_BASE = 'https://api.adspower.com/v1'
+
+    # Constante generada en tiempo de ejecución:
+    COUNTRY_LANG = ISO3166::Country.all.each_with_object({}) do |country, h|
+        # El primer idioma oficial (ISO 639-1) que encuentre:
+        language_code = country.languages&.first || 'en'
+        # Construimos la etiqueta BCP47 Language-Region:
+        h[country.alpha2] = "#{language_code}-#{country.alpha2}"
+    end.freeze
 
     # reference: https://localapi-doc-en.adspower.com/
     # reference: https://localapi-doc-en.adspower.com/docs/Rdw7Iu
@@ -163,6 +172,23 @@ class AdsPowerClient
         end
     end # def create
 
+
+    # Lookup GeoIP gratuito (freegeoip.app) y parseo básico
+    def geolocate(ip)
+        uri = URI("https://freegeoip.app/json/#{ip}")
+        res = Net::HTTP.get(uri)
+        h = JSON.parse(res)
+        {
+        country_code: h["country_code"],
+        time_zone:    h["time_zone"],
+        latitude:     h["latitude"],
+        longitude:    h["longitude"]
+        }
+    rescue
+        # Fallback genérico
+        { country_code: "US", time_zone: "America/New_York", latitude: 38.9, longitude: -77.0 }
+    end
+
     # Create a new desktop profile with custom name, proxy, and fingerprint settings
     #
     # @param name            [String] the profile’s display name
@@ -173,39 +199,44 @@ class AdsPowerClient
     def create2(name:, proxy_config:, group_id: '0', browser_version: nil)
         browser_version ||= adspower_default_browser_version
 
+        # 1) Hacemos GeoIP sobre la IP del proxy
+        geo = geolocate(proxy_config[:ip])
+        lang = COUNTRY_LANG[geo[:country_code]] || "en-US"
+
         with_lock do
             url = "#{adspower_listener}:#{port}/api/v2/browser-profile/create"
             body = {
                 'name'            => name,
                 'group_id'        => group_id,
                 'user_proxy_config' => {
-                'proxy_soft'     => proxy_config[:proxy_soft]     || 'other',
-                'proxy_type'     => proxy_config[:proxy_type]     || 'http',
-                'proxy_host'     => proxy_config[:ip],
-                'proxy_port'     => proxy_config[:port].to_s,
-                'proxy_user'     => proxy_config[:user],
-                'proxy_password' => proxy_config[:password]
+                    'proxy_soft'     => proxy_config[:proxy_soft]     || 'other',
+                    'proxy_type'     => proxy_config[:proxy_type]     || 'http',
+                    'proxy_host'     => proxy_config[:ip],
+                    'proxy_port'     => proxy_config[:port].to_s,
+                    'proxy_user'     => proxy_config[:user],
+                    'proxy_password' => proxy_config[:password]
                 },
                 'fingerprint_config' => {
-                    # 1) Chrome kernel version → must match your Chromedriver
-                    'browser_kernel_config' => {
-                        'version' => browser_version,
-                        'type'    => 'chrome'
-                    },
-                    # 2) Auto‐detect timezone (and locale) from proxy IP
-                    'automatic_timezone' => '1',
-                    'timezone'           => '',
-                    'language'           => [],
-                    # 3) Force desktop UA (no mobile): empty random_ua & default UA settings
-                    'ua' => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "\
-"AppleWebKit/537.36 (KHTML, like Gecko) Chrome/#{browser_version}.0.0.0 Safari/537.36",
-                    'ua_category' => 'desktop',
-                    #'screen_resolution' => '1920*1080',
-                    'is_mobile' => false,
-                    # standard desktop fingerprints
-                    'webrtc'  => 'disabled',  # hide real IP via WebRTC
-                    'flash'   => 'allow',
-                    'fonts'   => [],          # default fonts
+                    # Desactivamos auto-timezone de AdsPower
+                    "automatic_timezone" => "0",
+                    # Forzamos la zona horaria del proxy
+                    "timezone"           => geo[:time_zone],
+                    # Idioma/locale coherente con país
+                    "language"           => [ lang ],
+                    # Coordenadas geográficas (si AdsPower las soporta)
+                    "latitude"           => geo[:latitude].to_s,
+                    "longitude"          => geo[:longitude].to_s,
+                    # UA forzado a escritorio Windows/Mac/Linux según país
+                    "ua_category"        => 'desktop',
+                    "ua" => "Mozilla/5.0 (X11; Linux x86_64) "\
+                            "AppleWebKit/537.36 (KHTML, like Gecko) "\
+                            "Chrome/#{browser_version}.0.0.0 Safari/537.36",
+                    # Hardware y plugins mínimos estándar
+                    "is_mobile"  => false,
+                    "webrtc"     => 'disabled',
+                    "flash"      => 'allow',
+                    "fonts"      => [],      # Dejar fonts por defecto
+                    "screen_resolution" => '1920*1080'  # o puedes rotar por país
                 }
             }
 
@@ -342,7 +373,72 @@ class AdsPowerClient
             });
             JS
         )
+=begin
+        # ------------- AQUI VA LA INYECCIÓN MÁGICA -------------
+        driver.execute_cdp(
+            'Page.addScriptToEvaluateOnNewDocument',
+            source: <<~JS
+            // 1) navigator.webdriver
+            Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined,
+                configurable: true
+            });
 
+            // 2) User-Agent versión alineada a Chrome 136
+            const ua = "Mozilla/5.0 (X11; Linux x86_64) "\
+        "(KHTML, like Gecko) Chrome/136.0.7103.59 Safari/537.36";
+            Object.defineProperty(navigator, 'userAgent', { get: () => ua });
+            Object.defineProperty(navigator, 'appVersion',{ get: () => ua });
+
+            // 3) platform, oscpu
+            Object.defineProperty(navigator, 'platform', { get: () => 'Linux x86_64' });
+            Object.defineProperty(navigator, 'oscpu',    { get: () => 'Linux x86_64' });
+
+            // 4) languages
+            Object.defineProperty(navigator, 'language',  { get: () => 'en-US' });
+            Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en'] });
+
+            // 5) Webdriver vendor / renderer leaks (WebGL & AudioContext)
+            const getParameter = WebGLRenderingContext.prototype.getParameter;
+            WebGLRenderingContext.prototype.getParameter = function(parameter) {
+                // por ejemplo, parchea los vendor strings:
+                if (parameter === 37445) return 'Intel Inc.';    // VENDOR
+                if (parameter === 37446) return 'Intel Iris';    // RENDERER
+                return getParameter(parameter);
+            };
+
+            const AudioContext = window.AudioContext;
+            window.AudioContext = function() {
+                const ctx = new AudioContext();
+                // parchea un pequeño ruido en la fingerprint:
+                const orig = ctx.createAnalyser;
+                ctx.createAnalyser = function() {
+                const analyser = orig.call(this);
+                analyser.getFloatFrequencyData = function(arr) {
+                    // inyecta micro-ruido:
+                    for (let i = 0; i < arr.length; i++) {
+                    arr[i] += (Math.random() - 0.5) * 1e-5;
+                    }
+                    return arr;
+                };
+                return analyser;
+                };
+                return ctx;
+            };
+
+            // 6) Emulación de timezone e idioma en CDP
+            JS
+        )
+
+        # Finalmente, fuerza el timezone a America/New_York
+        driver.execute_cdp('Emulation.setTimezoneOverride', timezoneId: 'America/New_York')
+
+        # Si quieres, ajusta aquí también viewport/resolución, por ejemplo:
+        driver.execute_cdp('Emulation.setDeviceMetricsOverride', {
+            width: 1920, height: 1080, deviceScaleFactor: 1,
+            mobile: false
+        })
+=end
         # Save the driver
         @@drivers[id] = driver
 
