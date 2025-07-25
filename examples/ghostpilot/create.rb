@@ -35,6 +35,5 @@ puts 'done!'.green
 
 print 'Visiting BrowserScan... '
 br.get('https://www.browserscan.net/')
+#br.get('https://www.browserscan.net/bot-detection')
 puts 'done!'.green
-
-binding.pry

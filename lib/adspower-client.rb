@@ -238,10 +238,26 @@ class AdsPowerClient
                     # creation time so that every DNS query happens inside Chrome’s DoH stack:
                     # 
                     "extra_launch_flags" => [
+                        # === DNS over HTTPS only ===
                         "--enable-features=DnsOverHttps",
                         "--dns-over-https-mode=secure",
                         "--dns-over-https-templates=https://cloudflare-dns.com/dns-query",
-                        "--disable-ipv6"
+                        "--disable-ipv6",
+
+                        # === hide “Chrome is being controlled…” banner ===
+                        #
+                        # Even though you baked in the DoH flags under extra_launch_flags, 
+                        # you never told Chrome to hide its “automation” banners or black-hole 
+                        # all other DNS lookups — and BrowserScan still sees those UDP:53 calls 
+                        # leaking out.
+                        # 
+                        # What you need is to push three more flags into your profile creation, 
+                        # and then attach with the exact same flags when Selenium hooks in.
+                        # 
+                        "--disable-blink-features=AutomationControlled",
+                        "--disable-infobars",
+                        "--disable-features=TranslateUI",            # optional but reduces tell-tale infobars
+                        "--host-resolver-rules=MAP * 0.0.0.0,EXCLUDE localhost"
                     ],
 
                     # ─── 1) Kernel & versión ───────────────────────────
@@ -369,108 +385,44 @@ class AdsPowerClient
         driver
     end
 
-    # Attach to the existing browser session with Selenium WebDriver.
     def driver2(id, headless: false, read_timeout: 180)
-        # Return the existing driver if it's still active.
-        old = @@drivers[id]
-        return old if old
-
-        # Otherwise, start the driver
-        ret = self.start(id, headless)
-
-        # Attach test execution to the existing browser
-        url = ret['data']['ws']['selenium']
+        return @@drivers[id] if @@drivers[id]
+      
+        # 1) start the AdsPower profile / grab its WebSocket URL
+        data = start(id, headless)['data']
+        ws   = data['ws']['selenium']  # e.g. "127.0.0.1:XXXXX"
+      
+        # 2) attach with DevTools (no more excludeSwitches or caps!)
         opts = Selenium::WebDriver::Chrome::Options.new
-        opts.add_option("debuggerAddress", url)
-        
-        # si quieres headless
-        opts.add_argument("--headless") if headless
-  
-        # Set up the custom HTTP client with a longer timeout
-        client = Selenium::WebDriver::Remote::Http::Default.new
-        client.read_timeout = read_timeout # Set this to the desired timeout in seconds
+        opts.debugger_address = ws
+        opts.add_argument('--headless') if headless
+      
+        http = Selenium::WebDriver::Remote::Http::Default.new
+        http.read_timeout = read_timeout
+      
+        driver = Selenium::WebDriver.for(:chrome, options: opts, http_client: http)
 
-        # Connect to the existing browser
-        driver = Selenium::WebDriver.for(
-            :chrome, 
-            options: opts, 
-            http_client: client
-        )
-
-=begin
-# 1) nuke navigator.webdriver
 driver.execute_cdp(
-    'Page.addScriptToEvaluateOnNewDocument',
-    source: <<~JS
-      Object.defineProperty(navigator, 'webdriver', {
-        get: () => undefined,
-        configurable: true
-      });
-    JS
-  )
+  'Page.addScriptToEvaluateOnNewDocument',
+  source: <<~JS
+    // 1) remove any leftover cdc_… / webdriver hooks
+    for (const k of Object.getOwnPropertyNames(window)) {
+      if (k.startsWith('cdc_') || k.includes('webdriver')) {
+        try { delete window[k]; } catch(e){}
+      }
+    }
 
-  # 2) fake a real plugins array + mimeTypes
-  driver.execute_cdp(
-    'Page.addScriptToEvaluateOnNewDocument',
-    source: <<~JS
-      const fakePlugin = {
-        name: 'Chrome PDF Plugin',
-        filename: 'internal-pdf-viewer',
-        description: 'Portable Document Format'
-      };
-      Object.defineProperty(navigator, 'plugins', {
-        get: () => [ fakePlugin ],
-        configurable: true
-      });
-      const fakeMime = { type: 'application/pdf', suffixes: 'pdf', description: '' };
-      Object.defineProperty(navigator, 'mimeTypes', {
-        get: () => [ fakeMime ],
-        configurable: true
-      });
-    JS
-  )
+    // 2) stub out window.chrome so Chrome-based detection thinks this is “normal” Chrome
+    window.chrome = { runtime: {} };
+  JS
+)
 
-  # 3) spoof languages
-  driver.execute_cdp(
-    'Page.addScriptToEvaluateOnNewDocument',
-    source: <<~JS
-      Object.defineProperty(navigator, 'language',  { get: () => 'en-US' });
-      Object.defineProperty(navigator, 'languages', { get: () => ['en-US','en'] });
-    JS
-  )
-
-  # 4) stub out window.chrome so “if (window.chrome && window.chrome.runtime)” passes
-  driver.execute_cdp(
-    'Page.addScriptToEvaluateOnNewDocument',
-    source: <<~JS
-      window.chrome = { runtime: {} };
-    JS
-  )
-
-  # 5) Permissions API patch (some sites check for notifications permission)
-  driver.execute_cdp(
-    'Page.addScriptToEvaluateOnNewDocument',
-    source: <<~JS
-      const origQuery = navigator.permissions.query;
-      navigator.permissions.query = (params) =>
-        params.name === 'notifications'
-          ? Promise.resolve({ state: Notification.permission })
-          : origQuery(params);
-    JS
-  )
-
-  # 6) finally, set the timezone/language/devices like you already do
-  driver.execute_cdp('Emulation.setTimezoneOverride', timezoneId: 'America/New_York')
-  driver.execute_cdp('Emulation.setDeviceMetricsOverride', 
-    width: 1920, height: 1080, deviceScaleFactor: 1, mobile: false
-  )
-=end
-        # Save the driver
         @@drivers[id] = driver
-
-        # Return the driver
         driver
     end
+      
+            
+                        
 
     # DEPRECATED - Use Zyte instead of this method.
     #

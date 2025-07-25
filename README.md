@@ -20,6 +20,8 @@ Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](htt
 * [14. Net‑Read Timeout](#14-net-read-timeout)
 * [15. Logging](#15-logging)
 
+* [ChromeDriver](#chromedriver)
+
 ## 1. Installation
 
 ```bash
@@ -103,7 +105,7 @@ client.check('jc8y5g3')
 ## 9. Operating Browsers
 
 ```ruby
-driver = client.driver('jc8y5g3')
+driver = client.driver2('jc8y5g3')
 driver.get('https://google.com')
 ```
 
@@ -176,9 +178,9 @@ client = AdsPowerClient.new(
 )
 ```
 
-## Downloading ChromeDriver
+## ChromeDriver
 
-Make sure your AdsPower profile’s browser_version matches the actual **Chrome Browser** and **ChromeDriver** on disk.
+Make sure your AdsPower profile’s browser_version matches the actual version of **ChromeDriver** on disk.
 
 You can search for versions and download links in [this JSON access point](https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json).
 
