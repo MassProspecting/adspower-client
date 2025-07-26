@@ -23,8 +23,8 @@ profile_id = client.create2(
         password:       PROXY[:password]
     },
     group_id:           '0',
-    browser_version:    '131' # Make sure your AdsPower profile’s browser_version matches 
-                              # the actual Chrome Browser and ChromeDriver on disk.
+    browser_version:    '131'   # Make sure your AdsPower profile’s browser_version matches 
+                                # the actual Chrome Browser and ChromeDriver on disk.
 )
 puts "#{'done!'.green} Profile ID: #{profile_id.blue}"
 # => Creating profile... done! Profile ID: k11vcxmw

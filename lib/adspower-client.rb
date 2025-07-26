@@ -189,14 +189,32 @@ class AdsPowerClient
         { country_code: "US", time_zone: "America/New_York", latitude: 38.9, longitude: -77.0 }
     end
 
-    # Create a new desktop profile with custom name, proxy, and fingerprint settings
+    # Create a new desktop profile with:
+    #  • name, proxy, fingerprint, etc (unchanged)
+    #  • platform (e.g. "linkedin.com")
+    #  • tabs     (Array of URLs to open)
+    #  • username / password / fakey for that platform
     #
     # @param name            [String] the profile’s display name
     # @param proxy_config    [Hash]   keys: :ip, :port, :user, :password, :proxy_soft (default 'other'), :proxy_type (default 'http')
     # @param group_id        [String] which AdsPower group to assign (default '0')
     # @param browser_version [String] Chrome version to use (must match Chromedriver), defaults to adspower_default_browser_version
+    # @param browser_version [String] Chrome version to use (must match Chromedriver), defaults to adspower_default_browser_version
+    # @param platform        [String] e.g. "linkedin.com" (will appear under Platform tab)
+    # @param tabs            [Array<String>] e.g. ["https://linkedin.com/in/…"]
+    # @param username        [String] login for that platform
+    # @param password        [String] password for that platform
+    # @param fakey           [String,nil] optional 2FA key
     # @return String the new profile’s ID
     def create2(name:, proxy_config:, group_id: '0', browser_version: nil)
+    def create2(
+        name:, proxy_config:, group_id: '0', browser_version: nil,
+        platform:, 
+        tabs:,          # example: 'https://www.linkedin.com/feed'
+        username:, 
+        password:, 
+        fakey: ''       # leave blank if no 2FA
+    )
         browser_version ||= adspower_default_browser_version
 
         # 1) Hacemos GeoIP sobre la IP del proxy
@@ -207,6 +225,7 @@ class AdsPowerClient
         with_lock do
             url = "#{adspower_listener}:#{port}/api/v2/browser-profile/create"
             body = {
+                # ─── GENERAL & PROXY ─────────────────────────────
                 'name'            => name,
                 'group_id'        => group_id,
                 'user_proxy_config' => {
@@ -222,6 +241,15 @@ class AdsPowerClient
                     "proxy_dns":        1,                           # 1 = yes, 0 = no
                     "dns_servers":     ["8.8.8.8","8.8.4.4"]         # optional: your choice of DNS
                 },
+
+                # ─── PLATFORM ─────────────────────────────────────
+                'platform'          => platform,  # must be one of AdsPower’s supported “sites”
+                'tabs'              => tabs,      # array of URLs to open
+                'username'          => username,
+                'password'          => password,
+                'fakey'             => fakey,     # 2FA, if any
+
+                # ─── FINGERPRINT ──────────────────────────────────
                 "fingerprint_config" => {
 
                     # ─── 0) DNS Leak Prevention ───────────────────────────
@@ -267,19 +295,17 @@ class AdsPowerClient
                     },
 
                     # ─── 2) Timezone & locale ──────────────────────────
-                    "automatic_timezone" => "0",
-                    "timezone"           => geo[:time_zone],
+                    "automatic_timezone" => "1",
+                    #"timezone"           => geo[:time_zone],
                     "language"           => [ lang ],
 
                     # ─── 3) User-Agent coherente ───────────────────────
                     "ua_category" => "desktop",
-                    "ua"          => "Mozilla/5.0 (X11; Linux x86_64) "\
-                                    "AppleWebKit/537.36 (KHTML, like Gecko) "\
-                                    "Chrome/#{browser_version}.0.0.0 Safari/537.36",
+                    'ua' => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/#{browser_version}.0.6778.69 Safari/537.36",
                     "is_mobile"   => false,
 
                     # ─── 4) Pantalla y plataforma ──────────────────────
-                    "screen_resolution" => screen_res,        # "1920_1080"
+                    "screen_resolution" => "based_on_ua", # screen_res, "1920_1080"
                     "platform"          => "Linux x86_64",
 
                     # ─── 5) Canvas & WebGL custom ─────────────────────
