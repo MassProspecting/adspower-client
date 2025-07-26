@@ -206,7 +206,6 @@ class AdsPowerClient
     # @param password        [String] password for that platform
     # @param fakey           [String,nil] optional 2FA key
     # @return String the new profile’s ID
-    def create2(name:, proxy_config:, group_id: '0', browser_version: nil)
     def create2(
         name:, proxy_config:, group_id: '0', browser_version: nil,
         platform:, 
@@ -305,7 +304,8 @@ class AdsPowerClient
                     "is_mobile"   => false,
 
                     # ─── 4) Pantalla y plataforma ──────────────────────
-                    "screen_resolution" => "based_on_ua", # screen_res, "1920_1080"
+                    # It turns out that “Based on User-Agent” is purely a UI setting
+                    #"screen_resolution" => screen_res, "1920_1080"
                     "platform"          => "Linux x86_64",
 
                     # ─── 5) Canvas & WebGL custom ─────────────────────
