@@ -5,9 +5,18 @@ require 'blackstack-core'
 require 'selenium-webdriver'
 require 'watir'
 require 'fileutils'
+require 'countries'
 
 class AdsPowerClient  
     CLOUD_API_BASE = 'https://api.adspower.com/v1'
+
+    # Constante generada en tiempo de ejecución:
+    COUNTRY_LANG = ISO3166::Country.all.each_with_object({}) do |country, h|
+        # El primer idioma oficial (ISO 639-1) que encuentre:
+        language_code = country.languages&.first || 'en'
+        # Construimos la etiqueta BCP47 Language-Region:
+        h[country.alpha2] = "#{language_code}-#{country.alpha2}"
+    end.freeze
 
     # reference: https://localapi-doc-en.adspower.com/
     # reference: https://localapi-doc-en.adspower.com/docs/Rdw7Iu
@@ -163,49 +172,181 @@ class AdsPowerClient
         end
     end # def create
 
-    # Create a new desktop profile with custom name, proxy, and fingerprint settings
+
+    # Lookup GeoIP gratuito (freegeoip.app) y parseo básico
+    def geolocate(ip)
+        uri = URI("https://freegeoip.app/json/#{ip}")
+        res = Net::HTTP.get(uri)
+        h = JSON.parse(res)
+        {
+        country_code: h["country_code"],
+        time_zone:    h["time_zone"],
+        latitude:     h["latitude"],
+        longitude:    h["longitude"]
+        }
+    rescue
+        # Fallback genérico
+        { country_code: "US", time_zone: "America/New_York", latitude: 38.9, longitude: -77.0 }
+    end
+
+    # Create a new desktop profile with:
+    #  • name, proxy, fingerprint, etc (unchanged)
+    #  • platform (e.g. "linkedin.com")
+    #  • tabs     (Array of URLs to open)
+    #  • username / password / fakey for that platform
     #
     # @param name            [String] the profile’s display name
     # @param proxy_config    [Hash]   keys: :ip, :port, :user, :password, :proxy_soft (default 'other'), :proxy_type (default 'http')
     # @param group_id        [String] which AdsPower group to assign (default '0')
-    # @param browser_version [String] Chrome version to use (must match Chromedriver), defaults to adspower_default_browser_version
+    # @param browser_version [String] optional Chrome version to use (must match Chromedriver). Only applies if `fingerprint` is nil, as custom fingerprints override kernel settings.
+    # @param fingerprint     [Hash, nil] optional fingerprint configuration. If not provided, a stealth-ready default is applied with DNS-over-HTTPS, spoofed WebGL/Canvas/audio, consistent User-Agent and locale, and hardening flags to minimize detection risks from tools like BrowserScan, Cloudflare, and Arkose Labs.
+    # @param platform        [String] (optional) target site domain, e.g. 'linkedin.com'
+    # @param tabs            [Array<String>] (optional) array of URLs to open on launch
+    # @param username        [String] (optional) platform login username
+    # @param password        [String] (optional) platform login password
+    # @param fakey           [String,nil] optional 2FA key
     # @return String the new profile’s ID
-    def create2(name:, proxy_config:, group_id: '0', browser_version: nil)
+    def create2(
+        name:, 
+        proxy_config:, 
+        group_id: '0', 
+        browser_version: nil,
+        fingerprint: nil,
+        platform:        '',       # default: no platform
+        tabs:            [],       # default: no tabs to open
+        username:        '',       # default: no login
+        password:        '',       # default: no password
+        fakey:           ''        # leave blank if no 2FA
+    )
         browser_version ||= adspower_default_browser_version
+        
+        # 0) Resolve full Chrome version ─────────────────────────────
+        # Fetch the list of known-good Chrome versions and pick the highest
+        uri = URI('https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json')
+        resp = Net::HTTP.get_response(uri)
+        unless resp.is_a?(Net::HTTPSuccess)
+            raise "Error fetching Chrome versions: HTTP #{resp.code}"
+        end
+        listing = JSON.parse(resp.body)
+        versions = listing['versions'] || []
+        # find all entries matching the major.minor prefix
+        matches = versions.map { |v| v['version'] }
+                            .select { |ver| ver.start_with?("#{browser_version}.") }
+        if matches.empty?
+            raise "Chrome version '#{browser_version}' not found in known-good versions list"
+        end
+        # pick the highest patch/build by semantic compare
+        full_version = matches
+            .map { |ver| ver.split('.').map(&:to_i) }
+            .max
+            .join('.')
+
+        # 1) Hacemos GeoIP sobre la IP del proxy
+        geo = geolocate(proxy_config[:ip])
+        lang = COUNTRY_LANG[geo[:country_code]] || "en-US"
+        screen_res = "1920_1080"
 
         with_lock do
             url = "#{adspower_listener}:#{port}/api/v2/browser-profile/create"
             body = {
+                # ─── GENERAL & PROXY ─────────────────────────────
                 'name'            => name,
                 'group_id'        => group_id,
                 'user_proxy_config' => {
-                'proxy_soft'     => proxy_config[:proxy_soft]     || 'other',
-                'proxy_type'     => proxy_config[:proxy_type]     || 'http',
-                'proxy_host'     => proxy_config[:ip],
-                'proxy_port'     => proxy_config[:port].to_s,
-                'proxy_user'     => proxy_config[:user],
-                'proxy_password' => proxy_config[:password]
+                    'proxy_soft'     => proxy_config[:proxy_soft]     || 'other',
+                    'proxy_type'     => proxy_config[:proxy_type]     || 'socks5',
+                    'proxy_host'     => proxy_config[:ip],
+                    'proxy_port'     => proxy_config[:port].to_s,
+                    'proxy_user'     => proxy_config[:user],
+                    'proxy_password' => proxy_config[:password],
+
+                    # ─── FORCE ALL DNS THROUGH PROXY ─────────────────
+                    # Avoid DNS-Leak
+                    "proxy_dns":        1,                           # 1 = yes, 0 = no
+                    "dns_servers":     ["8.8.8.8","8.8.4.4"]         # optional: your choice of DNS
                 },
-                'fingerprint_config' => {
-                    # 1) Chrome kernel version → must match your Chromedriver
-                    'browser_kernel_config' => {
-                        'version' => browser_version,
-                        'type'    => 'chrome'
+
+                # ─── PLATFORM ─────────────────────────────────────
+                'platform'          => platform,  # must be one of AdsPower’s supported “sites”
+                'tabs'              => tabs,      # array of URLs to open
+                'username'          => username,
+                'password'          => password,
+                'fakey'             => fakey,     # 2FA, if any
+
+                # ─── FINGERPRINT ──────────────────────────────────
+                "fingerprint_config" => fingerprint || {
+
+                    # ─── 0) DNS Leak Prevention ───────────────────────────
+                    # Even with “proxy_dns” forced on, a few ISPs will still 
+                    # silently intercept every UDP:53 out of your AdsPower VPS 
+                    # and shove it into their own resolver farm (the classic 
+                    # “transparent DNS proxy” attack that BrowserScan is warning you about). 
+                    #
+                    # Because you refuse to hot-patch your Chrome via extra args or CDP, 
+                    # the only way to survive an ISP-level hijack is to push all name lookups 
+                    # into an encrypted channel that the ISP simply can’t touch: DNS-over-HTTPS (DoH).
+                    #
+                    # Here’s the minimal change you need to bake into your AdsPower profile at 
+                    # creation time so that every DNS query happens inside Chrome’s DoH stack:
+                    # 
+                    "extra_launch_flags" => [
+                        # === DNS over HTTPS only ===
+                        "--enable-features=DnsOverHttps",
+                        "--dns-over-https-mode=secure",
+                        "--dns-over-https-templates=https://cloudflare-dns.com/dns-query",
+                        "--disable-ipv6",
+
+                        # === hide “Chrome is being controlled…” banner ===
+                        #
+                        # Even though you baked in the DoH flags under extra_launch_flags, 
+                        # you never told Chrome to hide its “automation” banners or black-hole 
+                        # all other DNS lookups — and BrowserScan still sees those UDP:53 calls 
+                        # leaking out.
+                        # 
+                        # What you need is to push three more flags into your profile creation, 
+                        # and then attach with the exact same flags when Selenium hooks in.
+                        # 
+                        "--disable-blink-features=AutomationControlled",
+                        "--disable-infobars",
+                        "--disable-features=TranslateUI",            # optional but reduces tell-tale infobars
+                        "--host-resolver-rules=MAP * 0.0.0.0,EXCLUDE localhost,EXCLUDE cloudflare-dns.com"
+                    ],
+
+                    # ─── 1) Kernel & versión ───────────────────────────
+                    "browser_kernel_config" => {
+                        "version" => browser_version,   # aquí usamos el parámetro
+                        "type"    => "chrome"
                     },
-                    # 2) Auto‐detect timezone (and locale) from proxy IP
-                    'automatic_timezone' => '1',
-                    'timezone'           => '',
-                    'language'           => [],
-                    # 3) Force desktop UA (no mobile): empty random_ua & default UA settings
-                    'ua' => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "\
-"AppleWebKit/537.36 (KHTML, like Gecko) Chrome/#{browser_version}.0.0.0 Safari/537.36",
-                    'ua_category' => 'desktop',
-                    #'screen_resolution' => '1920*1080',
-                    'is_mobile' => false,
-                    # standard desktop fingerprints
-                    'webrtc'  => 'disabled',  # hide real IP via WebRTC
-                    'flash'   => 'allow',
-                    'fonts'   => [],          # default fonts
+
+                    # ─── 2) Timezone & locale ──────────────────────────
+                    "automatic_timezone" => "1",
+                    #"timezone"           => geo[:time_zone],
+                    "language"           => [ lang ],
+
+                    # ─── 3) User-Agent coherente ───────────────────────
+                    "ua_category" => "desktop",
+                    'ua' => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/#{full_version} Safari/537.36",
+                    "is_mobile"   => false,
+
+                    # ─── 4) Pantalla y plataforma ──────────────────────
+                    # It turns out that “Based on User-Agent” is purely a UI setting
+                    #"screen_resolution" => screen_res, "1920_1080"
+                    "platform"          => "Linux x86_64",
+
+                    # ─── 5) Canvas & WebGL custom ─────────────────────
+                    "canvas"        => "1",
+                    "webgl_image"   => "1",
+                    "webgl"         => "0",    # 0=deshabilitado, 2=modo custom, 3=modo random-match
+                    "webgl_config"  => {
+                        "unmasked_vendor"   => "Intel Inc.",
+                        "unmasked_renderer" => "ANGLE (Intel, Mesa Intel(R) Xe Graphics (TGL GT2), OpenGL 4.6)",
+                        "webgpu"            => { "webgpu_switch" => "1" }
+                    },
+
+                    # ─── 6) Resto de ajustes ───────────────────────────
+                    "webrtc"   => "disabled",   # WebRTC sí admite “disabled”
+                    "flash"    => "block",      # Flash únicamente “allow” o “block”
+                    "fonts"    => []            # usar fonts por defecto
                 }
             }
 
@@ -295,33 +436,44 @@ class AdsPowerClient
         driver
     end
 
-    # Attach to the existing browser session with Selenium WebDriver.
     def driver2(id, headless: false, read_timeout: 180)
-        # Return the existing driver if it's still active.
-        old = @@drivers[id]
-        return old if old
-
-        # Otherwise, start the driver
-        ret = self.start(id, headless)
-
-        # Attach test execution to the existing browser
-        url = ret['data']['ws']['selenium']
+        return @@drivers[id] if @@drivers[id]
+      
+        # 1) start the AdsPower profile / grab its WebSocket URL
+        data = start(id, headless)['data']
+        ws   = data['ws']['selenium']  # e.g. "127.0.0.1:XXXXX"
+      
+        # 2) attach with DevTools (no more excludeSwitches or caps!)
         opts = Selenium::WebDriver::Chrome::Options.new
-        opts.add_option("debuggerAddress", url)
+        opts.debugger_address = ws
+        opts.add_argument('--headless') if headless
+      
+        http = Selenium::WebDriver::Remote::Http::Default.new
+        http.read_timeout = read_timeout
+      
+        driver = Selenium::WebDriver.for(:chrome, options: opts, http_client: http)
 
-        # Set up the custom HTTP client with a longer timeout
-        client = Selenium::WebDriver::Remote::Http::Default.new
-        client.read_timeout = read_timeout # Set this to the desired timeout in seconds
+        driver.execute_cdp(
+            'Page.addScriptToEvaluateOnNewDocument',
+            source: <<~JS
+                // 1) remove any leftover cdc_… / webdriver hooks
+                for (const k of Object.getOwnPropertyNames(window)) {
+                if (k.startsWith('cdc_') || k.includes('webdriver')) {
+                    try { delete window[k]; } catch(e){}
+                }
+                }
 
-        # Connect to the existing browser
-        driver = Selenium::WebDriver.for(:chrome, options: opts, http_client: client)
+                // 2) stub out window.chrome so Chrome-based detection thinks this is “normal” Chrome
+                window.chrome = { runtime: {} };
+            JS
+        )
 
-        # Save the driver
         @@drivers[id] = driver
-
-        # Return the driver
         driver
     end
+      
+            
+                        
 
     # DEPRECATED - Use Zyte instead of this method.
     #

@@ -21,7 +21,7 @@ profile_id = client.create2(
         password:       '***************'
     },
     group_id:           '0',
-    browser_version:    '131'
+    browser_version:    '138'
 )
 puts "done! Profile ID: #{profile_id}"
 # => Creating profile... done! Profile ID: k11vcxmw
