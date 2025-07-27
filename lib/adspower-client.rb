@@ -199,6 +199,7 @@ class AdsPowerClient
     # @param proxy_config    [Hash]   keys: :ip, :port, :user, :password, :proxy_soft (default 'other'), :proxy_type (default 'http')
     # @param group_id        [String] which AdsPower group to assign (default '0')
     # @param browser_version [String] optional Chrome version to use (must match Chromedriver). Only applies if `fingerprint` is nil, as custom fingerprints override kernel settings.
+    # @param os              [String] target OS for Chrome binary (one of 'linux64', 'mac-x64', 'mac-arm64', 'win32', 'win64'; default 'linux64'); used to filter the known-good versions JSON so we pick a build that actually ships for that platform
     # @param fingerprint     [Hash, nil] optional fingerprint configuration. If not provided, a stealth-ready default is applied with DNS-over-HTTPS, spoofed WebGL/Canvas/audio, consistent User-Agent and locale, and hardening flags to minimize detection risks from tools like BrowserScan, Cloudflare, and Arkose Labs.
     # @param platform        [String] (optional) target site domain, e.g. 'linkedin.com'
     # @param tabs            [Array<String>] (optional) array of URLs to open on launch
@@ -211,7 +212,8 @@ class AdsPowerClient
         proxy_config:, 
         group_id: '0', 
         browser_version: nil,
-        fingerprint: nil,
+        os:              'linux64',# new: one of linux64, mac-x64, mac-arm64, win32, win64
+        fingerprint:     nil,
         platform:        '',       # default: no platform
         tabs:            [],       # default: no tabs to open
         username:        '',       # default: no login
@@ -228,10 +230,14 @@ class AdsPowerClient
             raise "Error fetching Chrome versions: HTTP #{resp.code}"
         end
         listing = JSON.parse(resp.body)
-        versions = listing['versions'] || []
-        # find all entries matching the major.minor prefix
-        matches = versions.map { |v| v['version'] }
-                            .select { |ver| ver.start_with?("#{browser_version}.") }
+        entries = listing['versions'] || []
+        # keep only those entries whose version matches prefix *and* has a download for our OS
+        matches = entries.
+          select { |e|
+            e['version'].start_with?("#{browser_version}.") &&
+            e.dig('downloads','chrome').any? { |d| d['platform'] == os }
+          }.
+          map { |e| e['version'] }
         if matches.empty?
             raise "Chrome version '#{browser_version}' not found in known-good versions list"
         end

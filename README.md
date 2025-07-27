@@ -69,6 +69,7 @@ client.create2(
     },
     group_id:        '0',
     browser_version: '116', # only applies if `fingerprint` is nil
+    os:              'linux64', # default: 'linux64'
     platform:        'x.com',
     tabs:            ['https://www.x.com/feed'],
     username:        'johndoe@example.com',

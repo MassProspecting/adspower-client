@@ -11,7 +11,7 @@ puts client.online? ? 'yes' : 'no'
 
 print 'Creating profile... '
 profile_id = client.create2(
-    name:               'Example Profile',
+    name:               'Example Profile 02',
     proxy_config: {
         proxy_soft:     'other',
         proxy_type:     'http',
@@ -21,7 +21,8 @@ profile_id = client.create2(
         password:       '***************'
     },
     group_id:           '0',
-    browser_version:    '138'
+    browser_version:    '138',
+    os:                 'win32'
 )
 puts "done! Profile ID: #{profile_id}"
 # => Creating profile... done! Profile ID: k11vcxmw
