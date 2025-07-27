@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
     s.add_runtime_dependency 'selenium-webdriver', '~> 4.10.0', '>= 4.10.0'
     s.add_runtime_dependency 'watir', '~> 7.3.0', '>= 7.3.0'
     #s.add_runtime_dependency 'sequel', '~> 5.75.0', '>= 5.75.0'
+    s.add_runtime_dependency 'fileutils', '~> 1.6.0', '>= 1.6.0'
     s.add_runtime_dependency 'colorize', '~> 0.8.1', '>= 0.8.1'
     s.add_runtime_dependency 'simple_cloud_logging', '~> 1.2.2', '>= 1.2.2'
     s.add_runtime_dependency 'countries', '~> 7.1.1', '>= 7.1.1'
