@@ -200,10 +200,10 @@ class AdsPowerClient
     # @param group_id        [String] which AdsPower group to assign (default '0')
     # @param browser_version [String] optional Chrome version to use (must match Chromedriver). Only applies if `fingerprint` is nil, as custom fingerprints override kernel settings.
     # @param fingerprint     [Hash, nil] optional fingerprint configuration. If not provided, a stealth-ready default is applied with DNS-over-HTTPS, spoofed WebGL/Canvas/audio, consistent User-Agent and locale, and hardening flags to minimize detection risks from tools like BrowserScan, Cloudflare, and Arkose Labs.
-    # @param platform        [String] e.g. "linkedin.com" (will appear under Platform tab)
-    # @param tabs            [Array<String>] e.g. ["https://linkedin.com/in/…"]
-    # @param username        [String] login for that platform
-    # @param password        [String] password for that platform
+    # @param platform        [String] (optional) target site domain, e.g. 'linkedin.com'
+    # @param tabs            [Array<String>] (optional) array of URLs to open on launch
+    # @param username        [String] (optional) platform login username
+    # @param password        [String] (optional) platform login password
     # @param fakey           [String,nil] optional 2FA key
     # @return String the new profile’s ID
     def create2(
@@ -212,13 +212,34 @@ class AdsPowerClient
         group_id: '0', 
         browser_version: nil,
         fingerprint: nil,
-        platform:, 
-        tabs:,          # example: 'https://www.linkedin.com/feed'
-        username:, 
-        password:, 
-        fakey: ''       # leave blank if no 2FA
+        platform:        '',       # default: no platform
+        tabs:            [],       # default: no tabs to open
+        username:        '',       # default: no login
+        password:        '',       # default: no password
+        fakey:           ''        # leave blank if no 2FA
     )
         browser_version ||= adspower_default_browser_version
+        
+        # 0) Resolve full Chrome version ─────────────────────────────
+        # Fetch the list of known-good Chrome versions and pick the highest
+        uri = URI('https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json')
+        resp = Net::HTTP.get_response(uri)
+        unless resp.is_a?(Net::HTTPSuccess)
+            raise "Error fetching Chrome versions: HTTP #{resp.code}"
+        end
+        listing = JSON.parse(resp.body)
+        versions = listing['versions'] || []
+        # find all entries matching the major.minor prefix
+        matches = versions.map { |v| v['version'] }
+                            .select { |ver| ver.start_with?("#{browser_version}.") }
+        if matches.empty?
+            raise "Chrome version '#{browser_version}' not found in known-good versions list"
+        end
+        # pick the highest patch/build by semantic compare
+        full_version = matches
+            .map { |ver| ver.split('.').map(&:to_i) }
+            .max
+            .join('.')
 
         # 1) Hacemos GeoIP sobre la IP del proxy
         geo = geolocate(proxy_config[:ip])
@@ -304,7 +325,7 @@ class AdsPowerClient
 
                     # ─── 3) User-Agent coherente ───────────────────────
                     "ua_category" => "desktop",
-                    'ua' => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/#{browser_version}.0.6778.69 Safari/537.36",
+                    'ua' => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/#{full_version} Safari/537.36",
                     "is_mobile"   => false,
 
                     # ─── 4) Pantalla y plataforma ──────────────────────
