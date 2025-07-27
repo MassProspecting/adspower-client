@@ -21,7 +21,7 @@ Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](htt
 * [15. Logging](#15-logging)
 
 * [ChromeDriver](#chromedriver)
-* [Advanced Fingerprint Examples](#advanced-fingerprint-examples)
+* [Advanced Fingerprint Setup](#advanced-fingerprint-setup)
 
 ## 1. Installation
 
@@ -194,6 +194,6 @@ Make sure your AdsPower profile’s browser_version matches the actual version o
 You can search for versions and download links in [this JSON access point](https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json).
 
 
-## Advanced Fingerprint Examples
+## Advanced Fingerprint Setup
 
 You can override the default fingerprint entirely using the `fingerprint:` parameter. 
