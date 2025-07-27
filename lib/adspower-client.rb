@@ -198,8 +198,8 @@ class AdsPowerClient
     # @param name            [String] the profile’s display name
     # @param proxy_config    [Hash]   keys: :ip, :port, :user, :password, :proxy_soft (default 'other'), :proxy_type (default 'http')
     # @param group_id        [String] which AdsPower group to assign (default '0')
-    # @param browser_version [String] Chrome version to use (must match Chromedriver), defaults to adspower_default_browser_version
-    # @param browser_version [String] Chrome version to use (must match Chromedriver), defaults to adspower_default_browser_version
+    # @param browser_version [String] optional Chrome version to use (must match Chromedriver). Only applies if `fingerprint` is nil, as custom fingerprints override kernel settings.
+    # @param fingerprint     [Hash, nil] optional fingerprint configuration. If not provided, a stealth-ready default is applied with DNS-over-HTTPS, spoofed WebGL/Canvas/audio, consistent User-Agent and locale, and hardening flags to minimize detection risks from tools like BrowserScan, Cloudflare, and Arkose Labs.
     # @param platform        [String] e.g. "linkedin.com" (will appear under Platform tab)
     # @param tabs            [Array<String>] e.g. ["https://linkedin.com/in/…"]
     # @param username        [String] login for that platform
@@ -207,7 +207,11 @@ class AdsPowerClient
     # @param fakey           [String,nil] optional 2FA key
     # @return String the new profile’s ID
     def create2(
-        name:, proxy_config:, group_id: '0', browser_version: nil,
+        name:, 
+        proxy_config:, 
+        group_id: '0', 
+        browser_version: nil,
+        fingerprint: nil,
         platform:, 
         tabs:,          # example: 'https://www.linkedin.com/feed'
         username:, 
@@ -249,7 +253,7 @@ class AdsPowerClient
                 'fakey'             => fakey,     # 2FA, if any
 
                 # ─── FINGERPRINT ──────────────────────────────────
-                "fingerprint_config" => {
+                "fingerprint_config" => fingerprint || {
 
                     # ─── 0) DNS Leak Prevention ───────────────────────────
                     # Even with “proxy_dns” forced on, a few ISPs will still 

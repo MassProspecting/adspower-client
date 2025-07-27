@@ -8,7 +8,7 @@ Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](htt
 * [2. Getting Started](#2-getting-started)
 * [3. Creating Profiles](#3-creating-profiles)
 * [4. Deleting Profile](#4-deleting-profile)
-* [5. Retrieving Number of Profiles](#5-retrieving-number-of-profiles)
+* [5. Retrieving Number of Profile.s](#5-retrieving-number-of-profiles)
 * [6. Starting Profile](#6-starting-profile)
 * [7. Stopping Profile](#7-stopping-profile)
 * [8. Checking if Profile is Running](#8-checking-if-profile-is-running)
@@ -21,6 +21,7 @@ Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](htt
 * [15. Logging](#15-logging)
 
 * [ChromeDriver](#chromedriver)
+* [Advanced Fingerprint Examples](#advanced-fingerprint-examples)
 
 ## 1. Installation
 
@@ -51,22 +52,30 @@ Remember to keep opened the AdsPower app in your computer, and stay logged in.
 
 ## 3. Creating Profiles
 
+Creates a new desktop profile in AdsPower, suitable for stealth automation on a specific platform.
+
+This method sets proxy, fingerprint, startup tabs, and optionally username/password/2FA. If you don’t provide a `fingerprint`, a default stealth-ready configuration is applied — including DNS-over-HTTPS and fingerprint consistency for anti-bot evasion.
+
 ```ruby
 client.create2(
-    name:               'Example Profile',
+    name:            'My New Profile',
     proxy_config: {
         proxy_soft:     'other',
-        proxy_type:     'http',
-        ip:             '55.55.55.55',
-        port:           10001,
-        user:           '**********',
-        password:       '**********'
+        proxy_type:     'socks5',
+        ip:             '1.2.3.4',
+        port:           1080,
+        user:           'proxyuser',
+        password:       'proxypass'
     },
-    group_id:           '0',
-    browser_version:    '134'
+    group_id:        '0',
+    browser_version: '116', # only applies if `fingerprint` is nil
+    platform:        'x.com',
+    tabs:            ['https://www.x.com/feed'],
+    username:        'johndoe@example.com',
+    password:        'password123',
+    fakey:           'GBAIA234...'  # optional: 2FA TOTP secret
 )
-# => "k11vcxmw"
-```
+# => "abc123xy" (profile ID)
 
 ## 4. Deleting Profile
 
@@ -184,3 +193,7 @@ Make sure your AdsPower profile’s browser_version matches the actual version o
 
 You can search for versions and download links in [this JSON access point](https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json).
 
+
+## Advanced Fingerprint Examples
+
+You can override the default fingerprint entirely using the `fingerprint:` parameter. 
