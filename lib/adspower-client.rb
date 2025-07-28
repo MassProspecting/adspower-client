@@ -104,6 +104,41 @@ class AdsPowerClient
             end
         end
     end
+    
+    # Fetch all groups
+    def list_groups
+        uri  = URI("#{adspower_listener}:#{port}/api/v1/group/list?api_key=#{key}")
+        resp = Net::HTTP.get(uri)
+        data = JSON.parse(resp)
+        raise "Error listing groups: #{data['msg']}" unless data['code'] == 0
+        data['data']['list']   # => [{ "id" => 0, "name" => "Ungrouped" }, …]
+    end
+
+    # Find the numeric ID for a given group name (exact match)
+    def find_group_id_by_name(name)
+        grp = list_groups.find { |g| g['group_name'].casecmp(name).zero? }
+        grp ? grp['group_id'] : nil
+    end
+
+    # returns an Array of profile‑hashes from the local API
+    def list_profiles(group_id: nil)
+        all = []
+        page = 1
+
+        loop do
+            params = { page: page, limit: 100 }
+            params[:group_id] = group_id if group_id
+            url    = "#{adspower_listener}:#{port}/api/v2/browser-profile/list"
+            resp   = BlackStack::Netting.call_post(url, params)
+            data   = JSON.parse(resp.body)
+            break unless data['code'] == 0 && data.dig('data','list').any?
+            batch = data['data']['list']
+            all += batch
+            page += 1
+        end
+
+        all
+    end
 
     # Count current profiles (optionally filtered by group)
     def profile_count(group_id: nil)
