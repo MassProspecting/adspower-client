@@ -49,9 +49,23 @@ class AdsPowerClient
 
     # Release the lock
     def release_lock
-        @lockfile.flock(File::LOCK_UN) if @lockfile
+        if @lockfile
+            @lockfile.flock(File::LOCK_UN)
+            # don't close while you expect further operations; close only on object shutdown
+            # @lockfile.close
+        end
     end
-
+=begin
+    # add a destructor to close file when object is GC'd / program shuts down
+    # Call client.close when you're done with the client instance (e.g., at program exit).
+    def close
+        if @lockfile && !@lockfile.closed?
+            @lockfile.flock(File::LOCK_UN) rescue nil
+            @lockfile.close rescue nil
+            @lockfile = nil
+        end
+    end
+=end
     # Wrapper method for critical sections
     def with_lock
         acquire_lock
@@ -81,12 +95,67 @@ class AdsPowerClient
         return
     end
 
+    def self.drivers
+        @@drivers
+    end
+
+    # Quit and remove all drivers (safe)
+    def self.cleanup_all
+        @@drivers.keys.each do |id|
+            drv = @@drivers[id]
+            begin
+                drv.quit if drv
+            rescue => e
+            # best-effort: ignore but log if desired
+            ensure
+                @@drivers.delete(id)
+            end
+        end
+    end
+
+    # Quit and remove a specific driver (safe)
+    def self.cleanup(id)
+        drv = @@drivers[id]
+        begin
+            drv.quit if drv
+        rescue => e
+            # best-effort: ignore but log if desired
+        ensure
+            @@drivers.delete(id)
+        end
+    end
+=begin
+    # Try to kill processes matching a pattern (last resort)
+    # Call it only if quit and client.stop both failed.
+    def self.force_kill_by_ws(ws_endpoint)
+        # example ws_endpoint: "127.0.0.1:12345" -> 12345
+        port = ws_endpoint.split(':').last rescue nil
+        return unless port
+        # find and kill processes that hold that port
+        begin
+            pids = `lsof -ti tcp:#{port}`.split.map(&:to_i)
+            pids.each { |pid| Process.kill('KILL', pid) rescue nil }
+        rescue => e
+            # ignore/ log
+        end
+    end
+=end
     # Kill all the adspower_global processes running on the local computer.
     def server_stop
         with_lock do
             self.server_pids.each { |pid|
                 `kill -9 #{pid}`
             }
+            # clean up @@driver
+            @@drivers.each do |id, driver|
+                begin
+                    driver.quit if driver
+                rescue => e
+                    # Log or handle the exception if needed
+                ensure
+                    @@drivers[id] = nil
+                end
+            end
         end
         return
     end
