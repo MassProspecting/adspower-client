@@ -19,6 +19,7 @@ Ruby gem for stealthly web-scraping and data-extraction using [AdsPower.com](htt
 * [13. Headless Mode](#13-headless-mode)
 * [14. Net‑Read Timeout](#14-net-read-timeout)
 * [15. Logging](#15-logging)
+* [16. Safe Navigation](#16-safe-navigation)
 
 * [ChromeDriver](#chromedriver)
 * [Advanced Fingerprint Setup](#advanced-fingerprint-setup)
@@ -187,6 +188,57 @@ client = AdsPowerClient.new(
     server_log: '~/foo.log'
 )
 ```
+
+## 16. Safe Navigation
+
+When automating navigation with AdsPower + Selenium you will occasionally hit transient or session-related errors:
+
+* `Errno::ECONNREFUSED` — chromedriver or socket closed unexpectedly.
+* `Selenium::WebDriver::Error::InvalidSessionIdError` — the Selenium session was quit.
+* `Selenium::WebDriver::Error::NoSuchWindowError` — the browser window was closed.
+
+This short recipe shows a minimal, safe pattern to recover: try navigation, on failure ask the AdsPower agent to stop the remote browser (preferred), fall back to a local best-effort cleanup, wait a bit, re-attach and retry once.
+
+```ruby
+# minimal "safe navigation" example
+begin
+  driver.get(url)
+rescue Errno::ECONNREFUSED,
+       Selenium::WebDriver::Error::InvalidSessionIdError,
+       Selenium::WebDriver::Error::NoSuchWindowError,
+       Selenium::WebDriver::Error::WebDriverError => e
+
+  warn "navigation error (#{e.class}): #{e.message}"
+
+  # preferred: ask AdsPower to stop the remote browser session
+  begin
+    client.stop(pid)
+  rescue => stop_err
+    warn "client.stop failed: #{stop_err.class}: #{stop_err.message}"
+    # fallback: best-effort local cleanup of cached driver object
+    AdsPowerClient.cleanup(pid)
+  end
+
+  # let sockets/ports free
+  sleep 1
+
+  # re-attach / re-create driver and retry once
+  driver = client.driver2(pid, headless: false)
+  driver.get(url)
+rescue => final_err
+  warn "final navigation failed: #{final_err.class}: #{final_err.message}"
+end
+```
+
+### Quick notes
+
+* **Prefer `client.stop` first.** It asks the AdsPower agent to stop the remote browser and is the most reliable way to free external processes.
+* **`AdsPowerClient.cleanup(id)` is a local, best-effort fallback** that should call `driver.quit` and *remove* the cached driver reference (use `delete(id)`, not assignment to `nil`).
+* **Provide a last-resort force-kill** in your client (search processes by devtools/websocket port) only if both `quit` and `stop` fail.
+* **Call a global cleanup at exit.** Implement and call `AdsPowerClient.cleanup_all` (which quits all cached drivers and deletes their keys) when your process terminates to avoid orphaned browser processes.
+* **Keep retries conservative.** This example retries once after cleanup. For production tasks consider exponential backoff and bounded retry counts.
+
+This short chapter gives a drop-in, safe pattern you can copy into your scripts. If you want, I can produce a slightly more robust `safe_navigate` helper (with retries, backoff and optional force-kill) and a patched `adspower-client.rb` that implements the force-kill and proper cleanup semantics.
 
 ## ChromeDriver
 
