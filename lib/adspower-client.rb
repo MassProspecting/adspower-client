@@ -547,8 +547,25 @@ class AdsPowerClient
     end
 
     def driver2(id, headless: false, read_timeout: 180)
-        return @@drivers[id] if @@drivers[id]
-      
+        #return @@drivers[id] if @@drivers[id]
+        # If we have a cached driver, verify it's still valid
+        if @@drivers[id]
+            begin
+                # quick, non-destructive sanity check: ask for window_handles
+                @@drivers[id].window_handles
+                return @@drivers[id]
+            rescue  Selenium::WebDriver::Error::InvalidSessionIdError,
+                    Selenium::WebDriver::Error::NoSuchWindowError,
+                    Errno::ECONNREFUSED => e
+                # stale/broken driver: best-effort cleanup and continue to create a new one
+                #warn "detected stale driver for #{id}: #{e.class}: #{e.message}"
+                self.class.cleanup(id)
+            rescue => e
+                #warn "unexpected error checking cached driver: #{e.class}: #{e.message}"
+                self.class.cleanup(id)
+            end
+        end
+
         # 1) start the AdsPower profile / grab its WebSocket URL
         data = start(id, headless)['data']
         ws   = data['ws']['selenium']  # e.g. "127.0.0.1:XXXXX"
