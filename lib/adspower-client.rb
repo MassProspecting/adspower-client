@@ -316,13 +316,14 @@ class AdsPowerClient
         proxy_config:, 
         group_id: '0', 
         browser_version: nil,
-        os:              'linux64',# new: one of linux64, mac-x64, mac-arm64, win32, win64
+        os:              'linux64', # new: one of linux64, mac-x64, mac-arm64, win32, win64
         fingerprint:     nil,
-        platform:        '',       # default: no platform
-        tabs:            [],       # default: no tabs to open
-        username:        '',       # default: no login
-        password:        '',       # default: no password
-        fakey:           ''        # leave blank if no 2FA
+        platform:        '',        # default: no platform
+        tabs:            [],        # default: no tabs to open
+        username:        '',        # default: no login
+        password:        '',        # default: no password
+        fakey:           '',        # leave blank if no 2FA
+        cookie:          nil        # import cookies - Type: Text - Format: JSON - username/password are ignored if cookie is not nil.
     )
         browser_version ||= adspower_default_browser_version
         
@@ -382,6 +383,7 @@ class AdsPowerClient
                 'username'          => username,
                 'password'          => password,
                 'fakey'             => fakey,     # 2FA, if any
+                'cookie'            => cookie,
 
                 # ─── FINGERPRINT ──────────────────────────────────
                 "fingerprint_config" => fingerprint || {
