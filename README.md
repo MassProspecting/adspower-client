@@ -69,13 +69,24 @@ client.create2(
         password:       'proxypass'
     },
     group_id:        '0',
-    browser_version: '116', # only applies if `fingerprint` is nil
-    os:              'linux64', # default: 'linux64' - only applies if `fingerprint` is nil
+
+    # mandatory - only applies if `fingerprint` is nil
+    browser_version: '116', 
+
+    # default: 'linux64' - only applies if `fingerprint` is nil
+    os:              'linux64', 
+
+    # saved passwords
     platform:        'x.com',
     tabs:            ['https://www.x.com/feed'],
     username:        'johndoe@example.com',
     password:        'password123',
-    fakey:           'GBAIA234...'  # optional: 2FA TOTP secret
+
+    # optional: 2FA TOTP secret
+    fakey:           'GBAIA234...'  
+
+    # optional: Import cookies. Type: text. Format: JSON.
+    cookie:          File.read('/home/leandro/Desktop/leandro-sardi.json')
 )
 # => "abc123xy" (profile ID)
 
