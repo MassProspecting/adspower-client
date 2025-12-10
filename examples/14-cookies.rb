@@ -17,17 +17,16 @@ puts client.online? ? 'yes' : 'no'
 print 'Creating profile... '
 profile_id = client.create2(
     name:               'Example Profile 03',
-    proxy_config: {
-        proxy_soft:     'other',
-        proxy_type:     'http',
-        ip:             '178.94.165.130',
-        port:           42557,
-        user:           'mzpVWET3hTxes64',
-        password:       'cfdCP9HycrU2QZ1'
-    },
+    proxy_config:       PROXY,
     group_id:           '0',
     browser_version:    '131',
-    os:                 'win32',
+    os:                 'linux64',
+
+    platform:           'linkedin.com', 
+    tabs:               ['https://www.linkedin.com/feed'],
+    username:           EMAIL, 
+    password:           PASSW, 
+
     cookie:             File.read('/home/leandro/Desktop/leandro-sardi.json')
 )
 puts "done! Profile ID: #{profile_id}"
